@@ -132,7 +132,7 @@ $conn-w    : 50px;   /* width of connector column — 25px per side */
   position: absolute;
   left: 0;
   width: $box-w;
-  &.is-tbd { opacity: 0.35; }
+  &.is-tbd { opacity: 0.85; }
 }
 
 /* ─── Player row ────────────────────────────────────────── */
@@ -248,10 +248,10 @@ $conn-w    : 50px;   /* width of connector column — 25px per side */
   z-index: 1;
 }
 .bmi-date {
-  font-size: 10px;
-  font-weight: 300;
+  font-size: 11px;
+  font-weight: 500;
   line-height: 20px;
-  color: #555;
+  color: #333;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
