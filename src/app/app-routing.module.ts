@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
+import { AuthGuard } from "./guards/auth.guard";
 
 // Paths asli WTT dari wtt-reference-main.js baris 118360-118543
 const routes: Routes = [
@@ -29,7 +30,7 @@ const routes: Routes = [
   { path: "terms", loadChildren: () => import("./pages/about-us/about-us.module").then(m => m.AboutUsModule) },
   { path: "privacy", loadChildren: () => import("./pages/about-us/about-us.module").then(m => m.AboutUsModule) },
   { path: "login", loadChildren: () => import("./pages/login/login.module").then(m => m.LoginModule) },
-  { path: "admin", loadChildren: () => import("./pages/admin/admin.module").then(m => m.AdminModule) },
+  { path: "admin", loadChildren: () => import("./pages/admin/admin.module").then(m => m.AdminModule), canActivate: [AuthGuard] },
   { path: 'description', loadChildren: () => import('./pages/description/description.module').then(m => m.DescriptionModule) },
   { path: "**", redirectTo: "home" }
 ];
