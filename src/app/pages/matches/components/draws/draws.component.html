@@ -132,10 +132,8 @@
                     (mouseleave)="unhoverBye()">BYE</div>
 
                   <!-- Date + Match Centre link (date_time_section) -->
-                  <div class="bracket-match-info"
-                    *ngIf="match.date && match.playerB && !match.hasByeB && !match.hasByeA && !match.playerA?.isTbd">
-                    <span class="bmi-date">{{ match.date }}</span>
-                    <span class="bmi-link">Match Centre</span>
+                  <div class="bracket-match-info" *ngIf="match.date">
+                    <span class="bmi-date">{{ formatMatchDate(match.date) }}</span>
                   </div>
 
                 </div><!-- /bracket-match-group -->

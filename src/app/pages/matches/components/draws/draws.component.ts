@@ -202,4 +202,24 @@ export class DrawsComponent implements OnInit, OnDestroy, OnChanges {
       cat.matches.sort((a, b) => a.round - b.round || a.slotIndex - b.slotIndex);
     }
   }
+
+  // Format date: '2026-09-06 · 08:20' → 'Minggu, 06 September 2026 · 08:20'
+  formatMatchDate(raw: string): string {
+    if (!raw) return '';
+    const HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const BULAN = ['Januari','Februari','Maret','April','Mei','Juni',
+                   'Juli','Agustus','September','Oktober','November','Desember'];
+    // raw format: '2026-09-06 · 08:20' or just '2026-09-06'
+    const parts = raw.split('·');
+    const datePart = parts[0].trim(); // '2026-09-06'
+    const timePart = parts[1] ? parts[1].trim() : '';
+    const d = new Date(datePart + 'T00:00:00');
+    if (isNaN(d.getTime())) return raw;
+    const hari = HARI[d.getDay()];
+    const tgl = String(d.getDate()).padStart(2, '0');
+    const bln = BULAN[d.getMonth()];
+    const thn = d.getFullYear();
+    const formatted = `${hari}, ${tgl} ${bln} ${thn}`;
+    return timePart ? `${formatted} · ${timePart}` : formatted;
+  }
 }

@@ -351,6 +351,19 @@ export class AdminComponent implements OnInit {
   getPlayerUrl(id: any): string { return '/playerDescription?playerId=' + id; }
   getGenderLabel(g: string): string { return g === 'F' ? 'Perempuan' : 'Laki-laki'; }
   getFlagUrl(code: string): string { return 'https://flagcdn.com/16x12/' + (code || 'xx').toLowerCase() + '.png'; }
+
+  formatMatchDate(tanggal: string, jam?: string): string {
+    const HARI  = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const BULAN = ['Januari','Februari','Maret','April','Mei','Juni',
+                   'Juli','Agustus','September','Oktober','November','Desember'];
+    if (!tanggal) return '';
+    const d = new Date(tanggal + 'T00:00:00');
+    if (isNaN(d.getTime())) return tanggal;
+    const tgl = String(d.getDate()).padStart(2, '0');
+    const result = `${HARI[d.getDay()]}, ${tgl} ${BULAN[d.getMonth()]} ${d.getFullYear()}`;
+    return jam ? `${result} · ${jam}` : result;
+  }
+
   getDivisiColor(d: string): string {
     const m: any = {
       A: '#f06b25', B: '#1a6fc4', C: '#9b59b6', D: '#2ecc71',

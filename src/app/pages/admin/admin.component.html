@@ -716,7 +716,7 @@
 
                         <!-- Match info footer -->
                         <div class="bracket-match-info" *ngIf="m.tanggal || m.table || m.jam">
-                          <span class="bmi-date" *ngIf="m.tanggal">{{ m.tanggal }}<span *ngIf="m.jam"> · {{ m.jam }}</span></span>
+                          <span class="bmi-date" *ngIf="m.tanggal">{{ formatMatchDate(m.tanggal, m.jam) }}</span>
                           <span class="bmi-link" *ngIf="m.table">Meja {{ m.table }}</span>
                         </div>
 
