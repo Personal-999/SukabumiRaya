@@ -167,3 +167,79 @@
   &:hover { background: #d45a1e; }
 }
 .cal-location { flex-shrink: 0; font-size: 11px; color: #999; text-align: right; min-width: 140px; }
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 768px) {
+
+  /* Topbar: stack vertically */
+  .events-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px 10px;
+  }
+  .events-search-wrap { width: 100%; }
+  .events-search-input { width: 100%; min-width: 0; }
+
+  /* Filter bar */
+  .filter-bar { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
+  .filter-select { min-width: 0; width: 160px; }
+
+  /* Event list */
+  .event-list { padding: 12px 0; gap: 12px; }
+
+  /* Card: make overlay top-to-bottom gradient */
+  .event-bg-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.75) 60%, rgba(0,0,0,.92) 100%);
+  }
+
+  /* Card-top: stack left+right vertically */
+  .event-card-top {
+    flex-direction: column;
+    padding: 20px 18px 0;
+    gap: 0;
+  }
+  .event-card-left {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Event name: smaller on mobile */
+  .event-name {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  /* Countdown: move to bottom, full width, horizontal strip */
+  .event-card-right {
+    width: 100%;
+    margin-top: 16px;
+  }
+  .countdown-box {
+    width: 100%;
+    justify-content: space-around;
+    border-radius: 0 0 4px 4px;
+    padding: 12px 8px;
+    gap: 0;
+  }
+  .cd-item { min-width: 0; flex: 1; padding: 0 4px; }
+  .cd-num { font-size: 1.6rem; }
+
+  /* Categories: scroll horizontally */
+  .event-categories {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+    padding-bottom: 4px;
+  }
+
+  /* Calendar view */
+  .cal-body { padding: 0 0 24px; }
+  .cal-event-row { flex-wrap: wrap; gap: 8px; padding: 12px 14px; }
+  .cal-date { width: 100%; }
+  .cal-event-info { width: 100%; }
+  .cal-location { min-width: 0; text-align: left; width: 100%; }
+}
