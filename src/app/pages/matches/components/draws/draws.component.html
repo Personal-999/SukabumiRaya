@@ -1,11 +1,21 @@
 <div class="draws-page">
 
-  <!-- Category tabs -->
-  <div class="draws-tabs">
-    <button class="draws-tab" *ngFor="let cat of categories; let i = index"
-      [class.active]="selectedCategory === i"
-      (click)="selectedCategory = i">
-      {{ cat.name }}
+  <!-- Category tabs with arrows -->
+  <div class="draws-tabs-wrap">
+    <button class="draws-tab-arrow" *ngIf="categories.length > 1 && selectedCategory > 0"
+      (click)="selectedCategory = selectedCategory - 1">
+      <i class="fa fa-chevron-left"></i>
+    </button>
+    <div class="draws-tabs" #tabsRef>
+      <button class="draws-tab" *ngFor="let cat of categories; let i = index"
+        [class.active]="selectedCategory === i"
+        (click)="selectedCategory = i">
+        {{ cat.name }}
+      </button>
+    </div>
+    <button class="draws-tab-arrow" *ngIf="categories.length > 1 && selectedCategory < categories.length - 1"
+      (click)="selectedCategory = selectedCategory + 1">
+      <i class="fa fa-chevron-right"></i>
     </button>
   </div>
 
