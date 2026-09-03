@@ -31,7 +31,7 @@
     <div class="divisi-pills">
       <button *ngFor="let d of availableDivisi" class="divisi-pill"
         [class.active]="selectedDivisi === d"
-        (click)="selectedDivisi = d">{{ d === 'All' ? 'Semua' : (['A','B','C','D'].includes(d) ? 'Divisi ' + d : d) }}</button>
+        (click)="selectedDivisi = d">{{ d === 'All' ? 'Semua' : (['A','B','C','D','16','17','18','19'].includes(d) ? 'Divisi ' + d : d) }}</button>
     </div>
 
     <!-- TABLE - klik row buka tab baru -->
