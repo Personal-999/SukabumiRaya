@@ -451,10 +451,24 @@
           </div>
         </div>
 
+        <!-- Search bar -->
+        <div style="padding:10px 0 4px;display:flex;align-items:center;gap:10px">
+          <div style="position:relative;flex:1;max-width:360px">
+            <i class="fa fa-search" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#b5bdd5;font-size:13px"></i>
+            <input type="text" [(ngModel)]="playerSearchQuery"
+              placeholder="Cari nama pemain atau PTM..."
+              style="width:100%;padding:8px 12px 8px 34px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;outline:none;color:#1a2035" />
+          </div>
+          <span *ngIf="playerSearchQuery" style="font-size:12px;color:#aaa">
+            {{ filteredPlayerList.length }} dari {{ playerList.length }} pemain
+          </span>
+        </div>
+
         <div class="news-table-wrap" data-aos="fade-up" data-aos-duration="500" data-aos-delay="80">
           <table class="news-table">
             <thead>
               <tr>
+                <th style="width:36px;text-align:center">No</th>
                 <th style="width:50px">ID</th>
                 <th style="width:56px">Foto</th>
                 <th>Nama Pemain</th>
@@ -466,9 +480,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let p of playerList; let i = index"
-                class="player-row-admin">
-                <td class="art-id">{{ p.id ? '#' + p.id : '#–' }}</td>
+              <tr *ngFor="let p of filteredPlayerList; let i = index" class="player-row-admin">
+                <td style="text-align:center;font-weight:700;color:#7e8299;font-size:12px">{{ i + 1 }}</td>
+                <td class="art-id">{{ p.id ? '#' + p.id.toString().slice(0,6) : '#–' }}</td>
                 <td>
                   <img [src]="getPlayerPhoto(p)" [alt]="p.fullName || p.lastName" class="art-thumb"
                     style="object-position:top"
@@ -490,8 +504,8 @@
                   <div class="art-actions"><button class="btn-edit" (click)="openPlayerEdit(p)" title="Edit"><i class="fa fa-pencil"></i></button><a [href]="getPlayerUrl(p.id)" class="btn-view" title="Lihat"><i class="fa fa-eye"></i></a><button class="btn-delete" (click)="deletePlayerDirect(p)" title="Hapus"><i class="fa fa-trash"></i></button></div>
                 </td>
               </tr>
-              <tr *ngIf="playerList.length === 0">
-                <td colspan="8" class="no-data">Belum ada pemain</td>
+              <tr *ngIf="filteredPlayerList.length === 0">
+                <td colspan="9" class="no-data">{{ playerSearchQuery ? 'Pemain tidak ditemukan' : 'Belum ada pemain' }}</td>
               </tr>
             </tbody>
           </table>

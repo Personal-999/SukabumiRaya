@@ -248,6 +248,15 @@ export class AdminComponent implements OnInit {
 
   // ===== PLAYER MANAGEMENT =====
   playerList: Player[] = [];
+  playerSearchQuery = '';
+  get filteredPlayerList(): Player[] {
+    if (!this.playerSearchQuery.trim()) { return this.playerList; }
+    const q = this.playerSearchQuery.toLowerCase();
+    return this.playerList.filter((p: any) =>
+      (p.fullName || '').toLowerCase().includes(q) ||
+      (p.ptm || '').toLowerCase().includes(q)
+    );
+  }
   playerFormMode: 'list' | 'create' | 'edit' = 'list';
   editingPlayer: Player | null = null;
   deletePlayerConfirmId: number | null = null;
