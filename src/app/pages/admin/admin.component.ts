@@ -265,12 +265,12 @@ export class AdminComponent implements OnInit {
       if (error) { console.error('loadPlayers error', error); return; }
       this.playerList = (data || []).map((p: any) => ({
         id: p.id,
-        fullName: p.full_name || '',
+        fullName: p.name || '',
         firstName: '', lastName: '',
         ptm: p.ptm || '',
-        gender: 'M', age: 0, divisi: 'A',
-        playingStyle: '', biography: '', imgUrl: '',
-        country: 'Indonesia', countryCode: 'id',
+        gender: p.gender || 'M', age: 0, divisi: p.division || 'A',
+        playingStyle: p.playing_style || '', biography: p.bio || '', imgUrl: p.photo_url || '',
+        country: p.country || 'Indonesia', countryCode: p.country_code || 'id',
         rank: 0, winRate: 0, favourites: 0
       }));
       this.stats[0].value = this.playerList.length;
@@ -293,7 +293,7 @@ export class AdminComponent implements OnInit {
     const name = (this.playerForm as any).fullName ? (this.playerForm as any).fullName.trim() : '';
     if (!name) { alert('Nama pemain tidak boleh kosong!'); return; }
     const dbData: any = {
-      full_name: name,
+      name: name,
       ptm: (this.playerForm.ptm || '').trim()
     };
     if (this.playerFormMode === 'create') {
