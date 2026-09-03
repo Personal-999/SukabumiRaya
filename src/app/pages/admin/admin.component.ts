@@ -294,7 +294,9 @@ export class AdminComponent implements OnInit {
     if (!name) { alert('Nama pemain tidak boleh kosong!'); return; }
     const dbData: any = {
       name: name,
-      ptm: (this.playerForm.ptm || '').trim()
+      ptm: (this.playerForm.ptm || '').trim(),
+      gender: this.playerForm.gender || 'M',
+      division: this.playerForm.divisi || 'A'
     };
     if (this.playerFormMode === 'create') {
       this.supabase.insertPlayer(dbData).then(({ error }: any) => {

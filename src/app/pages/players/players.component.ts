@@ -64,7 +64,13 @@ export class PlayersComponent implements OnInit {
 
   // ===== LIST HELPERS =====
   get filteredPlayers(): any[] {
-    let list = this.allPlayers.filter(p => p.gender === (this.selectedGender === 'Men' ? 'M' : 'F'));
+    let list = [...this.allPlayers];
+    // Only filter by gender if player has gender set; null/empty = show in Men (default)
+    if (this.selectedGender === 'Men') {
+      list = list.filter(p => p.gender !== 'F');
+    } else {
+      list = list.filter(p => p.gender === 'F');
+    }
     if (this.selectedDivisi !== 'All') { list = list.filter(p => p.divisi === this.selectedDivisi); }
     if (this.searchQuery.trim()) {
       const q = this.searchQuery.toLowerCase();
