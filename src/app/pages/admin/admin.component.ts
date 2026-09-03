@@ -447,7 +447,7 @@ export class AdminComponent implements OnInit {
     const teams = Array.from({length: teamCount}, (_, i) => ({
       no: i + 1, player: '', ptm: '', menang: 0, kalah: 0, nilai: 0, urt: 0,
       playerSearch: '', showDropdown: false,
-      results: Array.from({length: teamCount}, (_2, j) => i === j ? null : 0)
+      results: Array.from({length: teamCount}, (_2, j) => i === j ? null : null)
     }));
     const perms: string[] = [];
     // Round-robin order: bye=1→2v3, bye=2→1v3, bye=3→1v2
@@ -468,8 +468,8 @@ export class AdminComponent implements OnInit {
 
   addPoolTeam() {
     const n = this.poolForm.teams.length + 1;
-    this.poolForm.teams.forEach((t: any) => t.results.push(0));
-    const results = this.poolForm.teams.map((_: any, i: number) => i === n - 1 ? null : 0);
+    this.poolForm.teams.forEach((t: any) => t.results.push(null));
+    const results = this.poolForm.teams.map((_: any, i: number) => null as null);
     results.push(null);
     this.poolForm.teams.push({ no: n, player: '', ptm: '', menang: 0, kalah: 0, nilai: 0, urt: 0, playerSearch: '', showDropdown: false, results });
     this.rebuildSchedule();
