@@ -1410,15 +1410,35 @@
                 </table>
               </div>
 
-              <!-- Schedule mini -->
+              <!-- Schedule mini table -->
               <div *ngIf="pool.schedule && pool.schedule.length"
-                   style="border-top:1px solid #f0f2f5;padding:8px 14px">
-                <div *ngFor="let s of pool.schedule"
-                     style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11px;color:#555;border-bottom:1px dotted #eee">
-                  <span style="color:#f06b25;font-weight:700;min-width:16px">{{ s.m }}</span>
-                  <span style="flex:1;font-weight:600">{{ s.acara }}</span>
-                  <span style="color:#aaa;white-space:nowrap">{{ s.hari || '-' }} {{ s.jam || '' }}</span>
-                </div>
+                   style="border-top:2px solid #f0f2f5;padding:10px 14px 12px">
+                <div style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:.8px;margin-bottom:6px">JADWAL PERTANDINGAN</div>
+                <table style="width:100%;border-collapse:collapse;font-size:11px">
+                  <thead>
+                    <tr style="background:linear-gradient(135deg,#1a2035 0%,#2c3558 100%)">
+                      <th style="padding:5px 8px;color:#f06b25;font-weight:700;text-align:center;width:36px;border-radius:4px 0 0 0">MEJA</th>
+                      <th style="padding:5px 8px;color:#fff;font-weight:700;text-align:left">LAWAN</th>
+                      <th style="padding:5px 8px;color:#8ab4f8;font-weight:600;text-align:right;border-radius:0 4px 0 0;white-space:nowrap">HARI / JAM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let s of pool.schedule; let si=index"
+                        [style.background]="si%2===0 ? '#f9fafc' : '#ffffff'"
+                        style="border-bottom:1px solid #f0f2f5">
+                      <td style="padding:5px 8px;text-align:center">
+                        <span style="display:inline-block;min-width:22px;height:22px;line-height:22px;border-radius:50%;background:#f06b25;color:#fff;font-weight:700;font-size:11px;text-align:center">{{ s.m }}</span>
+                      </td>
+                      <td style="padding:5px 8px;font-weight:700;color:#1a2035;font-size:12px">{{ s.acara }}</td>
+                      <td style="padding:5px 8px;text-align:right;color:#555;white-space:nowrap"
+                          *ngIf="s.hari || s.jam">
+                        <span style="font-weight:600;color:#1a6fc4">{{ s.hari }}</span>
+                        <span *ngIf="s.jam" style="margin-left:4px;color:#f06b25;font-weight:700">{{ s.jam }}</span>
+                      </td>
+                      <td style="padding:5px 8px;text-align:right;color:#ccc" *ngIf="!s.hari && !s.jam">-</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
