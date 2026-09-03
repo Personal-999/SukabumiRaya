@@ -149,8 +149,7 @@
                 <tr *ngFor="let t of pool.teams; let ri = index">
                   <td class="pool-no">{{ t.no }}</td>
                   <td class="pool-name">
-                    <span class="pool-player-name">{{ t.player || '-' }}</span>
-                    <small class="pool-ptm" *ngIf="t.ptm">{{ t.ptm }}</small>
+                    <span class="pool-player-name">{{ t.player || '-' }}</span><span class="pool-ptm" *ngIf="t.ptm">&nbsp;&nbsp;<small>({{ t.ptm }})</small></span>
                   </td>
                   <td *ngFor="let r of t.results; let ci = index" [class.pool-self]="ri === ci">
                     <span *ngIf="ri !== ci && r === 1" class="pool-result pool-win">M</span>
