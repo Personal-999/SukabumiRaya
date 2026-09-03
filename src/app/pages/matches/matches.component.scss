@@ -61,11 +61,16 @@
   &.selected { background: #f0f0f0; color: #333; font-weight: 500; }
 }
 
-.search-wrap { display: flex; }
+.search-wrap { display: flex; position: relative; align-items: center; }
 .search-input {
   flex: 1; border: 1px solid #ddd; border-radius: 4px;
-  padding: 8px 14px; font-size: 13px; color: #333; outline: none; min-width: 260px;
+  padding: 8px 36px 8px 14px; font-size: 13px; color: #333; outline: none; min-width: 260px;
   &:focus { border-color: #f06b25; }
+}
+.search-clear-btn {
+  position: absolute; right: 10px; background: none; border: none;
+  color: #aaa; cursor: pointer; font-size: 13px; padding: 2px 4px;
+  &:hover { color: #f06b25; }
 }
 
 

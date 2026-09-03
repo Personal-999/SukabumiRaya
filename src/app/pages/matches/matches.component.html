@@ -52,8 +52,11 @@
     <div class="filter-group search-group">
       <label class="filter-label">Search</label>
       <div class="search-wrap">
-        <input class="search-input" type="search" placeholder="Search by Player, Round, Table..."
+        <input class="search-input" type="text" placeholder="Search by Player, Round, Table..."
           [(ngModel)]="searchQuery" (ngModelChange)="recomputeFiltered()" />
+        <button *ngIf="searchQuery" class="search-clear-btn" (click)="searchQuery=''; recomputeFiltered()" title="Hapus">
+          <i class="fa fa-times"></i>
+        </button>
       </div>
     </div>
 
