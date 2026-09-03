@@ -256,7 +256,7 @@ export class AdminComponent implements OnInit {
 
   playerForm = {
     fullName: '', ptm: '',
-    gender: 'M' as 'M' | 'F', age: 20, divisi: 'A' as 'A'|'B'|'C'|'D',
+    gender: 'M' as 'M' | 'F', age: 20, divisi: 'A' as string,
     playingStyle: 'Right Hand', biography: '', imgUrl: ''
   };
 
@@ -340,7 +340,14 @@ export class AdminComponent implements OnInit {
   getPlayerUrl(id: any): string { return '/playerDescription?playerId=' + id; }
   getGenderLabel(g: string): string { return g === 'F' ? 'Perempuan' : 'Laki-laki'; }
   getFlagUrl(code: string): string { return 'https://flagcdn.com/16x12/' + (code || 'xx').toLowerCase() + '.png'; }
-  getDivisiColor(d: string): string { const m: any = { A: '#f06b25', B: '#1a6fc4', C: '#9b59b6', D: '#2ecc71' }; return m[d] || '#888'; }
+  getDivisiColor(d: string): string {
+    const m: any = {
+      A: '#f06b25', B: '#1a6fc4', C: '#9b59b6', D: '#2ecc71',
+      'PELAJAR SD': '#e91e63',
+      '16': '#00bcd4', '17': '#009688', '18': '#ff9800', '19': '#795548'
+    };
+    return m[d] || '#888';
+  }
 
 
   // ========== POOL MANAGEMENT ==========
