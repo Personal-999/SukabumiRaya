@@ -1,0 +1,69 @@
+<div class="login-page">
+  <!-- Background blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="login-card">
+    <!-- Logo -->
+    <div class="login-logo">
+      <img src="assets/images/STT V1.png" alt="WTT Logo" />
+      <span class="login-brand">Sukabumi<br><strong>Table Tennis</strong></span>
+    </div>
+
+    <h2 class="login-title">Admin Login</h2>
+    <p class="login-sub">Masuk ke panel admin untuk mengelola data tournament</p>
+
+    <!-- Error -->
+    <div class="login-error" *ngIf="error">
+      <i class="fa fa-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" autocomplete="off">
+      <!-- Username -->
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <div class="input-wrap">
+          <i class="fa fa-user input-icon"></i>
+          <input
+            class="form-input"
+            type="text"
+            placeholder="Masukkan username..."
+            [(ngModel)]="username"
+            name="username"
+            autocomplete="username"
+          />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrap">
+          <i class="fa fa-lock input-icon"></i>
+          <input
+            class="form-input"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Masukkan password..."
+            [(ngModel)]="password"
+            name="password"
+            autocomplete="current-password"
+          />
+          <button type="button" class="toggle-pw" (click)="showPassword = !showPassword">
+            <i class="fa" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button class="login-btn" type="submit" [disabled]="loading">
+        <span *ngIf="!loading">Masuk <i class="fa fa-arrow-right"></i></span>
+        <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i> Memverifikasi...</span>
+      </button>
+    </form>
+
+    <p class="login-footer">
+      Khusus Administrator &mdash; Sukabumi Table Tennis &copy; 2024
+    </p>
+  </div>
+</div>

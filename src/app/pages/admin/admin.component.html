@@ -1,0 +1,1587 @@
+<div class="admin-layout" [class.sidebar-collapsed]="!sidebarOpen">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/images/STT V1.png" alt="Logo" class="sidebar-logo" />
+      <span class="sidebar-brand" *ngIf="sidebarOpen">
+        <strong>Sukabumi TT</strong>
+        <small>Admin Panel</small>
+      </span>
+      <button class="sidebar-toggle" (click)="sidebarOpen = !sidebarOpen">
+        <i class="fa" [class.fa-chevron-left]="sidebarOpen" [class.fa-chevron-right]="!sidebarOpen"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-label" *ngIf="sidebarOpen">MENU UTAMA</div>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='dashboard' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('dashboard')">
+        <i class="fas fa-tachometer-alt"></i><span *ngIf="sidebarOpen">Beranda</span>
+      </button>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='players' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('players')">
+        <i class="fas fa-users"></i><span *ngIf="sidebarOpen">Pemain</span>
+      </button>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='matches' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('matches')">
+        <i class="fas fa-trophy"></i><span *ngIf="sidebarOpen">Pertandingan</span>
+      </button>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='events' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('events')">
+        <i class="fas fa-calendar"></i><span *ngIf="sidebarOpen">Acara</span>
+      </button>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='news' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('news')">
+        <i class="fas fa-newspaper"></i><span *ngIf="sidebarOpen">Berita</span>
+      </button>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='videos' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('videos')">
+        <i class="fas fa-film"></i><span *ngIf="sidebarOpen">Video</span>
+      </button>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='pool' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('pool')">
+        <i class="fas fa-layer-group"></i><span *ngIf="sidebarOpen">Pool</span>
+      </button>
+      <div class="nav-divider"></div>
+      <div class="nav-group-label" *ngIf="sidebarOpen">SISTEM</div>
+      <button type="button" class="nav-item"
+        [ngStyle]="activeMenu==='settings' ? {background:'#f06b25',color:'#fff','font-weight':'700'} : {}"
+        (click)="setMenu('settings')">
+        <i class="fas fa-cog"></i><span *ngIf="sidebarOpen">Pengaturan</span>
+      </button>
+      <button type="button" class="nav-item nav-logout" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i><span *ngIf="sidebarOpen">Keluar</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="admin-main">
+
+    <!-- Top bar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <h2 class="page-title">
+          <span *ngIf="activeMenu==='dashboard'">Beranda</span>
+          <span *ngIf="activeMenu==='players'">Manajemen Pemain</span>
+          <span *ngIf="activeMenu==='matches'">Manajemen Pertandingan</span>
+          <span *ngIf="activeMenu==='events'">Manajemen Acara</span>
+          <span *ngIf="activeMenu==='news'">Manajemen Berita</span>
+          <span *ngIf="activeMenu==='videos'">Manajemen Video</span>
+          <span *ngIf="activeMenu==='settings'">Pengaturan</span>
+        </h2>
+      </div>
+      <div class="topbar-right">
+        <div class="admin-badge">
+          <i class="fas fa-user-circle"></i>
+          <span>Administrator</span>
+        </div>
+        <button class="publish-btn" (click)="publishData()" title="Export semua data agar bisa dilihat di browser lain">
+          <i class="fa fa-upload"></i> Publish Data
+        </button>
+        <a routerLink="/home" class="site-link" target="_blank">
+          <i class="fas fa-external-link-alt"></i> Lihat Website
+        </a>
+      </div>
+    </header>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="admin-content" *ngIf="activeMenu==='dashboard'">
+      <div class="stats-grid">
+        <div class="stat-card"
+          *ngFor="let s of stats; let i = index"
+          data-aos="fade-up"
+          [attr.data-aos-delay]="i * 70"
+          data-aos-duration="400">
+          <div class="stat-accent" [style.background]="s.color"></div>
+          <div class="stat-icon" [style.background]="s.bg" [style.color]="s.color">
+            <i [class]="s.icon"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" [style.color]="s.color">{{ s.value }}</div>
+            <div class="stat-label">{{ s.label }}</div>
+          </div>
+          <div class="stat-change">{{ s.change }}</div>
+        </div>
+      </div>
+
+      <div class="section-title" data-aos="fade-right" data-aos-duration="400">Aksi Cepat</div>
+      <div class="quick-actions" data-aos="fade-up" data-aos-duration="400" data-aos-delay="100">
+        <button class="action-btn" (click)="setMenu('players')">
+          <span class="action-icon" style="background:#fff5f0;color:#f06b25"><i class="fas fa-user-plus"></i></span>
+          <span class="action-label">Tambah Pemain</span>
+        </button>
+        <button class="action-btn" (click)="setMenu('news')">
+          <span class="action-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-edit"></i></span>
+          <span class="action-label">Tulis Berita</span>
+        </button>
+        <button class="action-btn" (click)="setMenu('events')">
+          <span class="action-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-plus-circle"></i></span>
+          <span class="action-label">Buat Acara</span>
+        </button>
+        <button class="action-btn" (click)="setMenu('matches')">
+          <span class="action-icon" style="background:#f5f3ff;color:#8b5cf6"><i class="fas fa-trophy"></i></span>
+          <span class="action-label">Input Match</span>
+        </button>
+      </div>
+
+      <div class="section-title" style="margin-top:8px" data-aos="fade-right" data-aos-duration="400">Aktivitas Terbaru</div>
+      <div class="activity-list" data-aos="fade-up" data-aos-duration="500" data-aos-delay="50">
+        <div class="activity-item" *ngFor="let a of activities">
+          <div class="activity-icon" [style.background]="a.bg" [style.color]="a.color">
+            <i [class]="a.icon"></i>
+          </div>
+          <div class="activity-text">
+            <div class="activity-desc">{{ a.text }}</div>
+            <div class="activity-time"><i class="far fa-clock"></i> {{ a.time }}</div>
+          </div>
+          <div class="activity-dot" [style.background]="a.color"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BERITA (NEWS) ===== -->
+    <div class="admin-content" *ngIf="activeMenu==='news'">
+
+      <!-- LIST VIEW -->
+      <ng-container *ngIf="newsFormMode==='list'">
+        <div class="news-mgmt-toolbar">
+          <div class="news-count">
+            <i class="fa fa-newspaper-o"></i>
+            {{ newsArticles.length }} artikel tersimpan &nbsp;|&nbsp;
+            ID berikutnya: <strong>#{{ nextArticleId }}</strong>
+          </div>
+          <button class="btn-create" (click)="openCreate()">
+            <i class="fa fa-plus"></i> Tulis Berita Baru
+          </button>
+        </div>
+
+        <!-- Article table -->
+        <div class="news-table-wrap">
+          <table class="news-table">
+            <thead>
+              <tr>
+                <th style="width:60px">ID</th>
+                <th style="width:80px">Thumbnail</th>
+                <th>Judul</th>
+                <th style="width:130px">Kategori</th>
+                <th style="width:110px">Tanggal</th>
+                <th style="width:130px">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let art of newsArticles">
+                <td class="art-id">#{{ art.id }}</td>
+                <td>
+                  <img [src]="art.imageUrl" [alt]="art.title" class="art-thumb" />
+                </td>
+                <td>
+                  <a [href]="getArticleUrl(art.id)" target="_blank" class="art-title-link">{{ art.title }}</a>
+                </td>
+                <td>
+                  <span class="art-cat-badge" [style.background]="art.categoryColor">{{ art.category }}</span>
+                </td>
+                <td class="art-date">{{ art.publishedDate }}</td>
+                <td>
+                  <div class="art-actions">
+                    <button class="btn-edit" (click)="openEdit(art)" title="Edit"><i class="fa fa-pencil"></i></button>
+                    <a [href]="getArticleUrl(art.id)" target="_blank" class="btn-view" title="Lihat"><i class="fa fa-eye"></i></a>
+                    <button class="btn-delete" (click)="confirmDelete(art.id)" title="Hapus"><i class="fa fa-trash"></i></button>
+                  </div>
+                  <!-- Confirm delete -->
+                  <div class="delete-confirm" *ngIf="deleteConfirmId === art.id">
+                    <span>Hapus artikel ini?</span>
+                    <button class="btn-confirm-del" (click)="deleteArticle(art.id)">Ya</button>
+                    <button class="btn-confirm-cancel" (click)="cancelDelete()">Tidak</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="newsArticles.length === 0">
+                <td colspan="6" class="no-data">Belum ada artikel</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+      <!-- CREATE / EDIT FORM -->
+      <ng-container *ngIf="newsFormMode==='create' || newsFormMode==='edit'">
+        <div class="news-form-header">
+          <button class="btn-back-list" (click)="newsFormMode='list'">
+            <i class="fa fa-arrow-left"></i> Kembali ke Daftar
+          </button>
+          <div class="news-form-id" *ngIf="newsFormMode==='create'">
+            ID Baru: <strong>#{{ nextArticleId }}</strong>
+            <small>Artikel tersedia di URL: /description?artId={{ nextArticleId }}</small>
+          </div>
+          <div class="news-form-id" *ngIf="newsFormMode==='edit' && editingArticle">
+            Edit Artikel: <strong>#{{ editingArticle.id }}</strong>
+            <small>Artikel tersedia di URL: /description?artId={{ editingArticle.id }}</small>
+          </div>
+        </div>
+
+        <div class="news-form-grid">
+          <!-- LEFT: main fields -->
+          <div class="news-form-left">
+            <div class="form-group">
+              <label>Judul Artikel *</label>
+              <input type="text" [(ngModel)]="newsForm.title" placeholder="Judul berita..." class="form-input" />
+            </div>
+
+            <div class="form-group">
+              <label>Excerpt / Ringkasan *</label>
+              <textarea [(ngModel)]="newsForm.excerpt" rows="3" placeholder="Ringkasan singkat artikel..." class="form-textarea"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Body / Isi Lengkap (HTML)</label>
+              <textarea [(ngModel)]="newsForm.body" rows="12" placeholder="<p>Isi lengkap artikel dalam format HTML...</p>" class="form-textarea mono"></textarea>
+              <small class="form-hint">Gunakan tag HTML: &lt;p&gt;, &lt;h2&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;blockquote&gt;</small>
+            </div>
+          </div>
+
+          <!-- RIGHT: metadata -->
+          <div class="news-form-right">
+            <div class="form-group">
+              <label>Kategori *</label>
+              <div class="category-presets">
+                <button *ngFor="let p of categoryPresets"
+                  class="preset-btn"
+                  [style.background]="p.color"
+                  (click)="applyPreset(p)">{{ p.label }}</button>
+              </div>
+              <input type="text" [(ngModel)]="newsForm.category" placeholder="Nama kategori..." class="form-input" style="margin-top:8px" />
+              <div class="color-row">
+                <label>Warna:</label>
+                <input type="color" [(ngModel)]="newsForm.categoryColor" class="form-color" />
+                <span class="color-preview" [style.background]="newsForm.categoryColor">{{ newsForm.categoryColor }}</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>URL Gambar Thumbnail</label>
+              <input type="text" [(ngModel)]="newsForm.imageUrl" placeholder="assets/articleimages/..." class="form-input" />
+              <div class="thumb-preview" *ngIf="newsForm.imageUrl">
+                <img [src]="newsForm.imageUrl" alt="Preview" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Related To (opsional)</label>
+              <input type="text" [(ngModel)]="newsForm.relatedTo" placeholder="Nama event terkait..." class="form-input" />
+            </div>
+
+            <div class="form-group">
+              <label>Kode Bendera (opsional)</label>
+              <input type="text" [(ngModel)]="newsForm.relatedFlag" placeholder="cn, kz, id, de..." class="form-input" style="max-width:120px" />
+            </div>
+
+            <div class="form-group">
+              <label>Tanggal Publikasi</label>
+              <input type="text" [(ngModel)]="newsForm.publishedDate" placeholder="5 hours ago / 1 day ago..." class="form-input" />
+            </div>
+
+            <div class="form-group">
+              <label>Penulis</label>
+              <input type="text" [(ngModel)]="newsForm.author" placeholder="WTT Staff" class="form-input" />
+            </div>
+
+            <button class="btn-save" (click)="saveArticle()"
+              [disabled]="!newsForm.title.trim() || !newsForm.category.trim()">
+              <i class="fa fa-save"></i>
+              {{ newsFormMode === 'create' ? 'Simpan & Terbitkan' : 'Simpan Perubahan' }}
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- ===== VIDEO MANAGEMENT ===== -->
+    <div class="admin-content" *ngIf="activeMenu==='videos'">
+
+      <!-- LIST VIEW -->
+      <ng-container *ngIf="videoFormMode==='list'">
+        <div class="news-mgmt-toolbar">
+          <div class="news-count">
+            <i class="fa fa-film"></i>
+            {{ videoList.length }} video tersimpan &nbsp;|&nbsp;
+            ID berikutnya: <strong>#{{ nextVideoId }}</strong>
+          </div>
+          <button class="btn-create" (click)="openVideoCreate()">
+            <i class="fa fa-plus"></i> Tambah Video Baru
+          </button>
+        </div>
+
+        <div class="news-table-wrap">
+          <table class="news-table">
+            <thead>
+              <tr>
+                <th style="width:60px">ID</th>
+                <th style="width:80px">Thumb</th>
+                <th>Judul</th>
+                <th style="width:140px">Kategori</th>
+                <th style="width:90px">Durasi</th>
+                <th style="width:130px">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of videoList">
+                <td class="art-id">#{{ v.id }}</td>
+                <td><img [src]="getVideoThumb(v)" [alt]="v.title" class="art-thumb" /></td>
+                <td><span class="art-title-link">{{ v.title }}</span></td>
+                <td><span class="art-cat-badge" [style.background]="getCatColor(v.categoryId)">{{ v.categoryName }}</span></td>
+                <td class="art-date">{{ v.duration }}</td>
+                <td>
+                  <div class="art-actions">
+                    <button class="btn-edit" (click)="openVideoEdit(v)" title="Edit"><i class="fa fa-pencil"></i></button>
+                    <button class="btn-delete" (click)="confirmVideoDelete(v.id)" title="Hapus"><i class="fa fa-trash"></i></button>
+                  </div>
+                  <div class="delete-confirm" *ngIf="deleteVideoConfirmId === v.id">
+                    <span>Hapus video ini?</span>
+                    <button class="btn-confirm-del" (click)="deleteVideo(v.id)">Ya</button>
+                    <button class="btn-confirm-cancel" (click)="cancelVideoDelete()">Tidak</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="videoList.length === 0"><td colspan="6" class="no-data">Belum ada video</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+      <!-- CREATE / EDIT FORM -->
+      <ng-container *ngIf="videoFormMode==='create' || videoFormMode==='edit'">
+        <div class="news-form-header">
+          <button class="btn-back-list" (click)="videoFormMode='list'">
+            <i class="fa fa-arrow-left"></i> Kembali ke Daftar
+          </button>
+          <div class="news-form-id" *ngIf="videoFormMode==='create'">
+            ID Baru: <strong>#{{ nextVideoId }}</strong>
+          </div>
+          <div class="news-form-id" *ngIf="videoFormMode==='edit' && editingVideo">
+            Edit Video: <strong>#{{ editingVideo.id }}</strong>
+          </div>
+        </div>
+
+        <div class="news-form-grid">
+          <div class="news-form-left">
+            <div class="form-group">
+              <label>Judul Video *</label>
+              <input type="text" [(ngModel)]="videoForm.title" placeholder="Judul video..." class="form-input" />
+            </div>
+            <div class="form-group">
+              <label>URL YouTube *</label>
+              <input type="text" [(ngModel)]="videoForm.youtubeUrl"
+                placeholder="https://www.youtube.com/watch?v=xxxxx"
+                class="form-input" (change)="onYoutubeUrlChange()" />
+              <small class="form-hint">Thumbnail akan otomatis diambil dari YouTube setelah URL dimasukkan</small>
+            </div>
+            <div class="form-group" *ngIf="videoForm.youtubeId">
+              <label>Preview Thumbnail (dari YouTube)</label>
+              <div class="thumb-preview">
+                <img [src]="'https://img.youtube.com/vi/' + videoForm.youtubeId + '/hqdefault.jpg'" alt="YouTube Thumb" />
+              </div>
+              <small class="form-hint" style="color:#2ecc71">Thumbnail YouTube terdeteksi! YouTube ID: {{ videoForm.youtubeId }}</small>
+            </div>
+            <div class="form-group">
+              <label>Deskripsi</label>
+              <textarea [(ngModel)]="videoForm.description" rows="4" placeholder="Deskripsi singkat video..." class="form-textarea"></textarea>
+            </div>
+          </div>
+
+          <div class="news-form-right">
+            <div class="form-group">
+              <label>Kategori *</label>
+              <select [(ngModel)]="videoForm.categoryId" class="form-input" (change)="onVideoCatChange()">
+                <option *ngFor="let c of videoCategories" [value]="c.id">{{ c.name }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Durasi</label>
+              <input type="text" [(ngModel)]="videoForm.duration" placeholder="7:29" class="form-input" style="max-width:120px" />
+            </div>
+            <div class="form-group">
+              <label>Tanggal Publikasi</label>
+              <input type="text" [(ngModel)]="videoForm.daysAgo" placeholder="4 days ago" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label>URL Thumbnail Kustom (opsional)</label>
+              <input type="text" [(ngModel)]="videoForm.thumb" placeholder="assets/videothumbs/..." class="form-input" />
+              <small class="form-hint">Kosongkan untuk pakai thumbnail YouTube otomatis</small>
+            </div>
+
+            <button class="btn-save" (click)="saveVideo()"
+              [disabled]="!videoForm.title.trim()">
+              <i class="fa fa-save"></i>
+              {{ videoFormMode === 'create' ? 'Simpan Video' : 'Simpan Perubahan' }}
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- ===== PLAYER MANAGEMENT ===== -->
+    <div class="admin-content" *ngIf="activeMenu==='players'">
+
+      <!-- LIST VIEW -->
+      <ng-container *ngIf="playerFormMode==='list'">
+        <div class="player-mgmt-toolbar">
+          <div class="player-toolbar-left">
+            <i class="fa fa-users" style="color:#b5bdd5;font-size:18px"></i>
+            <span class="player-count-text">
+              <strong style="color:#f06b25">{{ playerList.length }}</strong> pemain tersimpan
+            </span>
+          </div>
+          <div class="player-toolbar-right">
+            <button class="btn-clear-all" (click)="clearAllPlayers()" *ngIf="playerList.length > 0"
+                    title="Hapus semua pemain">
+              <i class="fa fa-trash"></i> Kosongkan
+            </button>
+            <button class="btn-create" (click)="openPlayerCreate()">
+              <i class="fa fa-plus"></i> Tambah Pemain Baru
+            </button>
+          </div>
+        </div>
+
+        <div class="news-table-wrap" data-aos="fade-up" data-aos-duration="500" data-aos-delay="80">
+          <table class="news-table">
+            <thead>
+              <tr>
+                <th style="width:50px">ID</th>
+                <th style="width:56px">Foto</th>
+                <th>Nama Pemain</th>
+                <th style="width:90px">Divisi</th>
+                <th style="width:130px">PTM</th>
+                <th style="width:110px">Jenis Kelamin</th>
+                <th style="width:55px">Umur</th>
+                <th style="width:120px">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of playerList; let i = index"
+                class="player-row-admin"
+                data-aos="fade-up"
+                [attr.data-aos-delay]="i < 8 ? i * 40 : 0"
+                data-aos-duration="350">
+                <td class="art-id">{{ p.id ? '#' + p.id : '#–' }}</td>
+                <td>
+                  <img [src]="getPlayerPhoto(p)" [alt]="p.fullName || p.lastName" class="art-thumb"
+                    style="object-position:top"
+                    onerror="this.src='https://wttwebcmsprod.blob.core.windows.net/websitefiles/images/general/men_default_left.png'" />
+                </td>
+                <td class="player-name-cell">
+                  <div class="player-name-main">
+                    <span class="player-last">{{ p.fullName || (p.lastName + ' ' + p.firstName) }}</span>
+                  </div>
+                  <div class="player-style-sub">{{ p.playingStyle }}</div>
+                </td>
+                <td>
+                  <span class="art-cat-badge" [style.background]="getDivisiColor(p.divisi)">{{ p.divisi }}</span>
+                </td>
+                <td class="ptm-cell">{{ p.ptm || '-' }}</td>
+                <td class="art-date">{{ getGenderLabel(p.gender) }}</td>
+                <td class="art-date">{{ p.age }}</td>
+                <td>
+                  <div class="art-actions"><button class="btn-edit" (click)="openPlayerEdit(p)" title="Edit"><i class="fa fa-pencil"></i></button><a [href]="getPlayerUrl(p.id)" class="btn-view" title="Lihat"><i class="fa fa-eye"></i></a><button class="btn-delete" (click)="deletePlayerDirect(p)" title="Hapus"><i class="fa fa-trash"></i></button></div>
+                </td>
+              </tr>
+              <tr *ngIf="playerList.length === 0">
+                <td colspan="8" class="no-data">Belum ada pemain</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+      <!-- CREATE / EDIT FORM -->
+      <ng-container *ngIf="playerFormMode==='create' || playerFormMode==='edit'">
+        <div class="news-form-header">
+          <button class="btn-back-list" (click)="playerFormMode='list'">
+            <i class="fa fa-arrow-left"></i> Kembali ke Daftar
+          </button>
+          <div class="news-form-id" *ngIf="playerFormMode==='create'">
+            ID Baru: <strong>#{{ nextPlayerId }}</strong>
+            <small>Contoh nama: Budi Santoso</small>
+          </div>
+          <div class="news-form-id" *ngIf="playerFormMode==='edit' && editingPlayer">
+            Edit Pemain: <strong>#{{ editingPlayer.id }}</strong>
+            <small>Format: Nama Lengkap. Digunakan di semua halaman.</small>
+          </div>
+        </div>
+
+        <div class="news-form-grid">
+          <!-- LEFT -->
+          <div class="news-form-left">
+            <div class="form-group">
+              <label>Nama Pemain <span style="color:#e74c3c">*</span></label>
+              <input type="text" [(ngModel)]="playerForm.fullName" placeholder="contoh: Budi Santoso" class="form-input" />
+              <small class="form-hint">Tulis nama lengkap pemain</small>
+            </div>
+            <div class="form-group">
+              <label>Biografi</label>
+              <textarea [(ngModel)]="playerForm.biography" rows="6" placeholder="Deskripsi singkat tentang pemain..." class="form-textarea"></textarea>
+            </div>
+            <div class="form-group">
+              <label>URL Foto Pemain</label>
+              <input type="text" [(ngModel)]="playerForm.imgUrl" placeholder="assets/players/..." class="form-input" />
+              <small class="form-hint">Kosongkan untuk pakai foto default WTT</small>
+              <div class="thumb-preview" *ngIf="playerForm.imgUrl">
+                <img [src]="playerForm.imgUrl" alt="Preview"
+                  onerror="this.src='https://wttwebcmsprod.blob.core.windows.net/websitefiles/images/general/men_default_left.png'" />
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="news-form-right">
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <select [(ngModel)]="playerForm.gender" class="form-input">
+                <option value="M">Pria (M)</option>
+                <option value="F">Wanita (F)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Divisi</label>
+              <select [(ngModel)]="playerForm.divisi" class="form-input"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
+            </div>
+            <div class="form-group">
+              <label>PTM (Perkumpulan Tenis Meja)</label>
+              <input type="text" [(ngModel)]="playerForm.ptm" placeholder="contoh: PTM Sukabumi Raya" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label>Umur</label>
+              <input type="number" [(ngModel)]="playerForm.age" min="6" max="80" class="form-input" style="max-width:100px" />
+            </div>
+            <div class="form-group">
+              <label>Gaya Bermain</label>
+              <select [(ngModel)]="playerForm.playingStyle" class="form-input">
+                <option value="Right Hand">Tangan Kanan</option>
+                <option value="Left Hand">Tangan Kiri</option>
+              </select>
+            </div>
+
+            <button class="btn-save" (click)="savePlayer()"
+              [disabled]="!playerForm.firstName.trim() || !playerForm.lastName.trim()">
+              <i class="fa fa-save"></i>
+              {{ playerFormMode === 'create' ? 'Simpan Pemain' : 'Simpan Perubahan' }}
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- ===== MATCH MANAGEMENT (BAGAN) ===== -->
+    <div class="admin-content" *ngIf="activeMenu==='matches'">
+
+
+      <!-- ============ BRACKET VIEW ============ -->
+      <ng-container *ngIf="bracketViewMode==='bracket'">
+
+        <!-- Setup bar -->
+        <div class="bracket-setup-bar">
+          <div class="form-group" style="flex:3;margin:0">
+            <label><i class="fa fa-calendar" style="color:#f06b25"></i> Event</label>
+            <select [(ngModel)]="bracketEventFilter" class="form-input" (ngModelChange)="onBracketEventChange()">
+              <option value="">-- Pilih Event --</option>
+              <option *ngFor="let ev of matchAdminEvents" [value]="ev">{{ ev }}</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:2;margin:0">
+            <label><i class="fa fa-list-ul" style="color:#f06b25"></i> Cabang</label>
+            <select [(ngModel)]="bracketSubEventFilter" class="form-input" (change)="initOrLoadBracket()">
+              <option *ngFor="let s of bracketSubEventOptions" [value]="s">{{ s }}</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1;margin:0">
+            <label><i class="fa fa-users" style="color:#f06b25"></i> Ukuran</label>
+            <select [(ngModel)]="selectedSizeOption" class="form-input" (ngModelChange)="onSizeChange($event)">
+              <option [ngValue]="64">64 Pemain</option>
+              <option [ngValue]="32">32 Pemain</option>
+              <option [ngValue]="16">16 Pemain</option>
+              <option [ngValue]="8">8 Pemain</option>
+            </select>
+          </div>
+          <button class="btn-edit" (click)="clearBracket()" title="Reset Bagan" style="align-self:flex-end;padding:9px 14px">
+            <i class="fa fa-refresh"></i> Reset
+          </button>
+        </div>
+
+        <!-- No event selected -->
+        <div class="coming-soon" *ngIf="!bracketEventFilter">
+          <div class="coming-icon"><i class="fa fa-sitemap"></i></div>
+          <h3>Pilih Event Terlebih Dahulu</h3>
+          <p>Pilih event dan cabang pertandingan di atas, lalu bagan akan otomatis muncul.</p>
+        </div>
+
+        <!-- Bracket Visual -->
+        <div *ngIf="bracketEventFilter" class="bracket-outer">
+          <div class="bracket-info-bar">
+            <span><i class="fa fa-trophy" style="color:#f06b25"></i> {{ bracketEventFilter }}</span>
+            <span>·</span>
+            <span>{{ bracketSubEventFilter }}</span>
+            <span>·</span>
+            <span>Bagan {{ bracketSizeFilter }}</span>
+            <span class="bracket-fill-count">{{ getBracketMatchCount() }} slot terisi</span>
+            <span class="bracket-edit-hint"><i class="fa fa-pencil"></i> Klik kotak untuk edit</span>
+          </div>
+
+          <!-- DRAWS-STYLE BRACKET VISUAL -->
+          <div class="bracket-scroll-wrap">
+            <div class="bracket-container">
+
+              <!-- Round headers -->
+              <div class="bracket-rounds-header">
+                <ng-container *ngFor="let round of bracketRoundsCache; let ri=index; let last=last">
+                  <div class="round-header">{{ round.label }}</div>
+                  <div class="round-header-gap" *ngIf="!last"></div>
+                </ng-container>
+              </div>
+
+              <!-- Bracket body -->
+              <div class="bracket-body">
+                <ng-container *ngFor="let round of bracketRoundsCache; let ri=index; let last=last; trackBy: trackByRound">
+
+                  <!-- Round column -->
+                  <div class="round-col">
+                    <div class="round-slots" [style.height.px]="getBracketColumnHeight()">
+                      <div class="bracket-match-group admin-editable"
+                        *ngFor="let m of round.matches; let mi=index; trackBy: trackByMatchId"
+                        [style.top.px]="getBracketMatchTop(ri, mi)"
+                        [class.status-completed]="m.status==='completed'"
+                        (click)="openBracketEdit(m)">
+
+                        <!-- Player A row -->
+                        <div class="bracket-player-row"
+                          [class.is-winner]="m.winner==='A'"
+                          [class.is-loser]="m.status==='completed' && m.winner==='B'"
+                          [class.is-tbd-row]="!m.playerA?.name">
+                          <div class="bp-side">
+                            <div class="bp-info">
+                              <i class="fa fa-user bp-icon"></i>
+                              <span class="bp-name">{{ m.playerA?.name || 'TBD' }}</span>
+                              <span class="bp-seed" *ngIf="m.playerA?.ptm"> ({{ m.playerA.ptm }})</span>
+                            </div>
+                          </div>
+                          <div class="bp-score" [class.score-winner]="m.winner==='A'">
+                            {{ m.status==='completed' && m.scoreA !== '' ? m.scoreA : '' }}
+                          </div>
+                        </div>
+
+                        <!-- Player B row -->
+                        <div class="bracket-player-row"
+                          [class.is-winner]="m.winner==='B'"
+                          [class.is-loser]="m.status==='completed' && m.winner==='A'"
+                          [class.is-tbd-row]="!m.playerB?.name">
+                          <div class="bp-side">
+                            <div class="bp-info">
+                              <i class="fa fa-user bp-icon"></i>
+                              <span class="bp-name">{{ m.playerB?.name || 'TBD' }}</span>
+                              <span class="bp-seed" *ngIf="m.playerB?.ptm"> ({{ m.playerB.ptm }})</span>
+                            </div>
+                          </div>
+                          <div class="bp-score" [class.score-winner]="m.winner==='B'">
+                            {{ m.status==='completed' && m.scoreB !== '' ? m.scoreB : '' }}
+                          </div>
+                        </div>
+
+                        <!-- Match info footer -->
+                        <div class="bracket-match-info" *ngIf="m.tanggal || m.table || m.jam">
+                          <span class="bmi-date" *ngIf="m.tanggal">{{ m.tanggal }}<span *ngIf="m.jam"> · {{ m.jam }}</span></span>
+                          <span class="bmi-link" *ngIf="m.table">Meja {{ m.table }}</span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div><!-- /round-col -->
+
+                  <!-- Connector column -->
+                  <div class="connector-col" *ngIf="!last"
+                    [style.height.px]="getBracketColumnHeight()">
+                    <ng-container *ngFor="let evenSlot of getBracketConnectorPairs(ri)">
+                      <div class="conn-arm conn-arm-top" [style.top.px]="getBracketConnectorTop(ri, evenSlot)"></div>
+                      <div class="conn-spine"
+                        [style.top.px]="getBracketConnectorTop(ri, evenSlot)"
+                        [style.height.px]="getBracketConnectorHeight(ri)"></div>
+                      <div class="conn-arm conn-arm-bot"
+                        [style.top.px]="getBracketConnectorTop(ri, evenSlot) + getBracketConnectorHeight(ri)"></div>
+                      <div class="conn-center-arm"
+                        [style.top.px]="getBracketConnectorTop(ri, evenSlot) + getBracketConnectorHeight(ri) / 2"></div>
+                    </ng-container>
+                  </div><!-- /connector-col -->
+
+                </ng-container>
+              </div><!-- /bracket-body -->
+            </div><!-- /bracket-container -->
+          </div><!-- /bracket-scroll-wrap -->
+        </div>
+
+        <!-- BRACKET EDIT SIDE PANEL -->
+        <div class="bracket-overlay" *ngIf="showBracketPanel" (click)="showBracketPanel=false"></div>
+        <div class="bracket-panel" [class.open]="showBracketPanel">
+          <div class="bp-header">
+            <div>
+              <div class="bp-title">Edit Pertandingan</div>
+              <div class="bp-subtitle" *ngIf="editingBracketMatch">
+                {{ getBracketRoundLabel(editingBracketMatch.round) }} · Match {{ editingBracketMatch.position }}
+              </div>
+            </div>
+            <button class="bp-close" (click)="showBracketPanel=false"><i class="fa fa-times"></i></button>
+          </div>
+
+          <div class="bp-body" *ngIf="editingBracketMatch">
+
+            <!-- Pemain A -->
+            <div class="bp-section">
+              <div class="bp-section-label" style="color:#f06b25;border-color:#f06b25">
+                <i class="fa fa-user"></i> PEMAIN A
+              </div>
+              <!-- Search box -->
+              <div class="bm-search-wrap">
+                <div class="form-group" style="margin:0;position:relative">
+                  <label><i class="fa fa-search"></i> Cari dari daftar pemain</label>
+                  <input type="text" [(ngModel)]="bmSearchA" class="form-input"
+                         placeholder="Ketik nama atau PTM..."
+                         (ngModelChange)="bmShowDropA=true"
+                         (focus)="bmShowDropA=true" />
+                  <div class="bm-dropdown" *ngIf="bmShowDropA && bmPlayersA.length > 0">
+                    <div class="bm-drop-item" *ngFor="let p of bmPlayersA" (click)="selectBracketPlayer('A', p)">
+                      <span class="bm-drop-name">{{ p.fullName }}</span>
+                      <span class="bm-drop-ptm" *ngIf="p.ptm">{{ p.ptm }}</span>
+                    </div>
+                  </div>
+                  <div class="bm-dropdown" *ngIf="bmShowDropA && bmSearchA.length>1 && bmPlayersA.length===0">
+                    <div class="bm-drop-empty">Tidak ada pemain, gunakan input manual</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Manual input -->
+              <div class="bm-manual-label">— atau ketik manual —</div>
+              <div class="form-group">
+                <label>Nama Pemain (manual)</label>
+                <input type="text" [(ngModel)]="editBMForm.playerAName" class="form-input" placeholder="Nama lengkap..." />
+              </div>
+              <div class="form-group">
+                <label>Nama PTM / Klub</label>
+                <input type="text" [(ngModel)]="editBMForm.playerAPTM" class="form-input" placeholder="PTM Sukabumi..." />
+              </div>
+            </div>
+
+            <!-- Pemain B -->
+            <div class="bp-section">
+              <div class="bp-section-label" style="color:#1a2035;border-color:#1a2035">
+                <i class="fa fa-user"></i> PEMAIN B
+              </div>
+              <!-- Search box -->
+              <div class="bm-search-wrap">
+                <div class="form-group" style="margin:0;position:relative">
+                  <label><i class="fa fa-search"></i> Cari dari daftar pemain</label>
+                  <input type="text" [(ngModel)]="bmSearchB" class="form-input"
+                         placeholder="Ketik nama atau PTM..."
+                         (ngModelChange)="bmShowDropB=true"
+                         (focus)="bmShowDropB=true" />
+                  <div class="bm-dropdown" *ngIf="bmShowDropB && bmPlayersB.length > 0">
+                    <div class="bm-drop-item" *ngFor="let p of bmPlayersB" (click)="selectBracketPlayer('B', p)">
+                      <span class="bm-drop-name">{{ p.fullName }}</span>
+                      <span class="bm-drop-ptm" *ngIf="p.ptm">{{ p.ptm }}</span>
+                    </div>
+                  </div>
+                  <div class="bm-dropdown" *ngIf="bmShowDropB && bmSearchB.length>1 && bmPlayersB.length===0">
+                    <div class="bm-drop-empty">Tidak ada pemain, gunakan input manual</div>
+                  </div>
+                </div>
+              </div>
+              <div class="bm-manual-label">— atau ketik manual —</div>
+              <div class="form-group">
+                <label>Nama Pemain (manual)</label>
+                <input type="text" [(ngModel)]="editBMForm.playerBName" class="form-input" placeholder="Nama lengkap..." />
+              </div>
+              <div class="form-group">
+                <label>Nama PTM / Klub</label>
+                <input type="text" [(ngModel)]="editBMForm.playerBPTM" class="form-input" placeholder="PTM Sukabumi..." />
+              </div>
+            </div>
+
+
+            <!-- Jadwal -->
+            <div class="bp-section">
+              <div class="bp-section-label">
+                <i class="fa fa-clock-o"></i> JADWAL &amp; LOKASI
+              </div>
+              <div class="event-form-row">
+                <div class="form-group" style="flex:1;margin:0">
+                  <label>Tanggal</label>
+                  <input type="date" [(ngModel)]="editBMForm.tanggal" class="form-input" />
+                </div>
+                <div class="form-group" style="flex:1;margin:0">
+                  <label>Jam</label>
+                  <input type="time" [(ngModel)]="editBMForm.jam" class="form-input" />
+                </div>
+              </div>
+              <div class="event-form-row" style="margin-top:8px">
+                <div class="form-group" style="flex:1;margin:0">
+                  <label>Nomor Meja</label>
+                  <input type="text" [(ngModel)]="editBMForm.table" class="form-input" placeholder="1" />
+                </div>
+                <div class="form-group" style="flex:2;margin:0">
+                  <label>Venue / GOR</label>
+                  <input type="text" [(ngModel)]="editBMForm.venue" class="form-input" placeholder="GOR Pemuda" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Hasil -->
+            <div class="bp-section">
+              <div class="bp-section-label"><i class="fa fa-trophy"></i> HASIL (jika selesai)</div>
+              <div class="form-group">
+                <label>Pemenang</label>
+                <select [(ngModel)]="editBMForm.winner" class="form-input">
+                  <option value="">-- Belum Selesai --</option>
+                  <option value="A">Pemain A Menang<span *ngIf="editBMForm.playerAName"> ({{ editBMForm.playerAName }})</span></option>
+                  <option value="B">Pemain B Menang<span *ngIf="editBMForm.playerBName"> ({{ editBMForm.playerBName }})</span></option>
+                </select>
+              </div>
+              <div class="event-form-row" *ngIf="editBMForm.winner" style="margin-top:8px">
+                <div class="form-group" style="flex:1;margin:0">
+                  <label>Game Menang A</label>
+                  <input type="number" [(ngModel)]="editBMForm.scoreA" class="form-input" min="0" max="7" placeholder="0" />
+                </div>
+                <div class="form-group" style="flex:1;margin:0">
+                  <label>Game Menang B</label>
+                  <input type="number" [(ngModel)]="editBMForm.scoreB" class="form-input" min="0" max="7" placeholder="0" />
+                </div>
+              </div>
+            </div>
+
+          </div><!-- end bp-body -->
+
+          <div class="bp-footer">
+            <button class="btn-back-list" (click)="showBracketPanel=false">Batal</button>
+            <button class="btn-save" style="flex:1;border-radius:8px;padding:10px 0" (click)="saveBracketEdit()">
+              <i class="fa fa-save"></i> Simpan
+            </button>
+          </div>
+        </div>
+
+      </ng-container><!-- end BRACKET VIEW -->
+
+      <!-- ============ LIST VIEW ============ -->
+      <ng-container *ngIf="bracketViewMode==='list'">
+
+        <div class="news-mgmt-toolbar" style="flex-wrap:wrap;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1">
+            <span style="font-size:12px;font-weight:700;color:#7e8299;white-space:nowrap">
+              <i class="fa fa-filter" style="color:#f06b25;margin-right:5px"></i>Filter Event:
+            </span>
+            <select class="form-input" style="max-width:320px;margin:0" [(ngModel)]="selectedMatchEvent">
+              <option value="">-- Semua Event --</option>
+              <option *ngFor="let ev of matchAdminEvents" [value]="ev">{{ ev }}</option>
+            </select>
+            <span style="font-size:12px;color:#7e8299">
+              {{ filteredAdminMatches.length }} pertandingan
+            </span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-delete" (click)="clearAllMatches()" *ngIf="matchList.length > 0"
+                    style="padding:8px 14px;font-size:12px" title="Hapus semua pertandingan">
+              <i class="fa fa-trash"></i> Hapus Semua
+            </button>
+            <button class="btn-create" (click)="openMatchCreate()">
+              <i class="fa fa-plus"></i> Tambah Pertandingan
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="coming-soon" *ngIf="matchFormMode==='list' && filteredAdminMatches.length===0">
+          <div class="coming-icon"><i class="fa fa-inbox"></i></div>
+          <h3>Belum Ada Pertandingan</h3>
+          <p>Klik "+ Tambah Pertandingan" atau gunakan tab Bagan Turnamen.</p>
+        </div>
+
+        <!-- Match Cards -->
+        <ng-container *ngIf="matchFormMode==='list'">
+          <div *ngFor="let m of filteredAdminMatches; let mi = index" class="match-admin-card">
+            <div class="match-admin-header">
+              <div class="match-admin-meta">
+                <span class="match-admin-round">{{ m.round }}</span>
+                <span *ngIf="m.drawGroup" class="match-admin-group">{{ m.drawGroup }}</span>
+                <span class="match-admin-subevent">{{ m.subEvent }}</span>
+                <span class="match-status-badge" [style.background]="matchStatusColor(m.status)">{{ matchStatusLabel(m.status) }}</span>
+              </div>
+              <div class="art-actions">
+                <button class="btn-edit" (click)="openMatchEdit(mi)" title="Edit"><i class="fa fa-pencil"></i></button>
+                <button class="btn-delete" (click)="deleteMatch(mi)" title="Hapus"><i class="fa fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="match-admin-vs">
+              <div class="match-admin-side">
+                <div class="match-admin-player" *ngFor="let p of m.playerA">
+                  <i class="fas fa-user-circle" style="color:#f06b25"></i>
+                  <span>{{ p.name }}<small *ngIf="p.ptm"> ({{ p.ptm }})</small></span>
+                </div>
+              </div>
+              <div class="match-admin-score" *ngIf="m.status==='completed'">
+                <span [class.winner]="m.scoreA > m.scoreB">{{ m.scoreA }}</span>
+                <span class="vs-sep">–</span>
+                <span [class.winner]="m.scoreB > m.scoreA">{{ m.scoreB }}</span>
+              </div>
+              <div class="match-admin-score" *ngIf="m.status!=='completed'">
+                <span class="vs-text">VS</span>
+              </div>
+              <div class="match-admin-side right">
+                <div class="match-admin-player" *ngFor="let p of m.playerB">
+                  <i class="fas fa-user-circle" style="color:#1a2035"></i>
+                  <span>{{ p.name }}<small *ngIf="p.ptm"> ({{ p.ptm }})</small></span>
+                </div>
+              </div>
+            </div>
+            <div class="match-admin-footer">
+              <span *ngIf="m.tanggal"><i class="fa fa-calendar" style="color:#f06b25"></i> {{ m.tanggal }}</span>
+              <span *ngIf="m.jam"><i class="fa fa-clock-o" style="color:#f06b25"></i> {{ m.jam }}</span>
+              <span *ngIf="m.table"><i class="fa fa-th" style="color:#f06b25"></i> Meja {{ m.table }}</span>
+              <span *ngIf="m.venue"><i class="fa fa-map-marker" style="color:#f06b25"></i> {{ m.venue }}</span>
+              <span *ngIf="m.event" style="font-weight:600;color:#7e8299">{{ m.event }}</span>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- CREATE / EDIT FORM -->
+        <ng-container *ngIf="matchFormMode==='create' || matchFormMode==='edit'">
+          <div class="news-form-header">
+            <button class="btn-back-list" (click)="matchFormMode='list'">
+              <i class="fa fa-arrow-left"></i> Kembali
+            </button>
+            <span class="news-form-id">
+              {{ matchFormMode==='create' ? 'Tambah Pertandingan Baru' : 'Edit Pertandingan' }}
+            </span>
+          </div>
+          <div class="event-form-card">
+            <div class="event-form-section">
+              <div class="event-form-section-label"><i class="fa fa-trophy"></i>Info Pertandingan</div>
+              <div class="event-form-row">
+                <div class="form-group" style="flex:2">
+                  <label>Event / Acara <span style="color:#e74c3c">*</span></label>
+                  <select [(ngModel)]="matchForm.event" class="form-input"
+                    (ngModelChange)="matchForm.subEvent = subEventOptions[0] || ''">
+                    <option value="">-- Pilih Event --</option>
+                    <option *ngFor="let ev of matchAdminEvents" [value]="ev">{{ ev }}</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex:2">
+                  <label>Cabang</label>
+                  <select [(ngModel)]="matchForm.subEvent" class="form-input">
+                    <option *ngFor="let s of subEventOptions" [value]="s">{{ s }}</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex:1">
+                  <label>Round</label>
+                  <select [(ngModel)]="matchForm.round" class="form-input">
+                    <option *ngFor="let r of roundOptions" [value]="r">{{ r }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="event-form-row">
+                <div class="form-group" style="flex:1">
+                  <label>Draw Group</label>
+                  <select [(ngModel)]="matchForm.drawGroup" class="form-input">
+                    <option *ngFor="let g of drawGroupOptions" [value]="g">{{ g }}</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex:1">
+                  <label>Status</label>
+                  <select [(ngModel)]="matchForm.status" class="form-input">
+                    <option value="scheduled">Terjadwal</option>
+                    <option value="live">Live</option>
+                    <option value="completed">Selesai</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="event-form-section">
+              <div class="event-form-section-label"><i class="fa fa-clock-o"></i>Jadwal &amp; Lokasi</div>
+              <div class="event-form-row">
+                <div class="form-group" style="flex:1"><label>Tanggal</label><input type="date" [(ngModel)]="matchForm.tanggal" class="form-input" /></div>
+                <div class="form-group" style="flex:1"><label>Jam</label><input type="time" [(ngModel)]="matchForm.jam" class="form-input" /></div>
+                <div class="form-group" style="flex:1"><label>Meja</label><input type="text" [(ngModel)]="matchForm.table" class="form-input" placeholder="1" /></div>
+                <div class="form-group" style="flex:2"><label>Venue</label><input type="text" [(ngModel)]="matchForm.venue" class="form-input" placeholder="GOR Pemuda" /></div>
+              </div>
+            </div>
+            <div class="event-form-section">
+              <div class="event-form-section-label" style="color:#f06b25">Pemain A</div>
+              <div class="event-form-row">
+                <div class="form-group" style="flex:2"><label>Nama <span style="color:#e74c3c">*</span></label><input type="text" [(ngModel)]="matchForm.playerA1Name" class="form-input" /></div>
+                <div class="form-group" style="flex:1"><label>PTM</label><input type="text" [(ngModel)]="matchForm.playerA1PTM" class="form-input" /></div>
+              </div>
+            </div>
+            <div class="event-form-section">
+              <div class="event-form-section-label" style="color:#1a2035">Pemain B</div>
+              <div class="event-form-row">
+                <div class="form-group" style="flex:2"><label>Nama <span style="color:#e74c3c">*</span></label><input type="text" [(ngModel)]="matchForm.playerB1Name" class="form-input" /></div>
+                <div class="form-group" style="flex:1"><label>PTM</label><input type="text" [(ngModel)]="matchForm.playerB1PTM" class="form-input" /></div>
+              </div>
+            </div>
+            <div class="event-form-section" *ngIf="matchForm.status==='completed'">
+              <div class="event-form-section-label"><i class="fa fa-star"></i>Hasil</div>
+              <div class="event-form-row">
+                <div class="form-group" style="flex:1"><label>Game A</label><input type="number" [(ngModel)]="matchForm.scoreA" class="form-input" /></div>
+                <div class="form-group" style="flex:1"><label>Game B</label><input type="number" [(ngModel)]="matchForm.scoreB" class="form-input" /></div>
+              </div>
+            </div>
+            <button class="btn-save" (click)="saveMatch()" [disabled]="!matchForm.event || !matchForm.playerA1Name || !matchForm.playerB1Name">
+              <i class="fa fa-save"></i>
+              {{ matchFormMode==='create' ? 'Simpan Pertandingan' : 'Simpan Perubahan' }}
+            </button>
+          </div>
+        </ng-container>
+
+      </ng-container><!-- end LIST VIEW -->
+    </div>
+
+    <!-- ===== BRACKET SIZE CONFIRMATION MODAL ===== -->
+    <div class="modal-overlay" *ngIf="showSizeConfirm" (click)="cancelSizeChange()" style="z-index:3000">
+      <div class="modal-card size-confirm-modal" (click)="$event.stopPropagation()" style="max-width:440px">
+        <div class="modal-header" style="background:linear-gradient(135deg,#1a2035,#2d3a5e);padding:20px 24px;border-radius:12px 12px 0 0">
+          <h3 style="color:#fff;margin:0;font-size:1.1rem"><i class="fa fa-users" style="color:#f06b25;margin-right:8px"></i>Konfirmasi Ukuran Bagan</h3>
+          <button (click)="cancelSizeChange()" style="background:none;border:none;color:#aaa;font-size:1.4rem;cursor:pointer;line-height:1">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:24px">
+          <p style="margin:0 0 8px;color:#666;font-size:0.9rem">Event</p>
+          <p style="margin:0 0 16px;font-weight:700;color:#1a2035;font-size:1rem">{{ bracketEventFilter }}</p>
+          <p style="margin:0 0 8px;color:#666;font-size:0.9rem">Cabang</p>
+          <p style="margin:0 0 20px;font-weight:700;color:#1a2035;font-size:1rem">{{ bracketSubEventFilter }}</p>
+          <div style="background:#fff8f0;border:2px solid #f06b25;border-radius:10px;padding:16px;text-align:center;margin-bottom:20px">
+            <p style="margin:0 0 4px;color:#888;font-size:0.85rem">Ukuran bagan yang dipilih</p>
+            <p style="margin:0;font-size:2rem;font-weight:800;color:#f06b25">{{ pendingSize }} Pemain</p>
+            <p style="margin:4px 0 0;color:#888;font-size:0.8rem">
+              <span *ngIf="pendingSize===64">R64 → R32 → R16 → QF → SF → Final</span>
+              <span *ngIf="pendingSize===32">R32 → R16 → QF → SF → Final</span>
+              <span *ngIf="pendingSize===16">R16 → QF → SF → Final</span>
+              <span *ngIf="pendingSize===8">QF → SF → Final</span>
+            </p>
+          </div>
+          <p style="margin:0 0 20px;color:#e74c3c;font-size:0.85rem;text-align:center" *ngIf="bracketData && bracketData.length > 0">
+            <i class="fa fa-exclamation-triangle"></i> Mengubah ukuran akan mereset semua data bagan yang ada!
+          </p>
+          <div style="display:flex;gap:12px">
+            <button (click)="cancelSizeChange()" class="btn-back-list" style="flex:1">Batal</button>
+            <button (click)="confirmSizeChange()" class="btn-edit" style="flex:1;background:#f06b25;color:#fff;border-color:#f06b25">
+              <i class="fa fa-check"></i> Terapkan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OTHER MENUS (placeholder) ===== -->
+    <div class="admin-content coming-soon" *ngIf="activeMenu!=='dashboard' && activeMenu!=='news' && activeMenu!=='videos' && activeMenu!=='players' && activeMenu!=='events' && activeMenu!=='pool' && activeMenu!=='matches' && activeMenu!=='settings'">
+      <div class="coming-icon"><i class="fa fa-wrench"></i></div>
+      <h3>Segera Hadir</h3>
+      <p>Fitur <strong>{{ activeMenu }}</strong> sedang dalam pengembangan.</p>
+      <button class="action-btn" (click)="setMenu('dashboard')">
+        <i class="fa fa-arrow-left"></i> Kembali ke Dashboard
+      </button>
+
+    </div>
+
+
+
+
+
+    <!-- ===== EVENT MANAGEMENT ===== -->
+    <div class="admin-content" *ngIf="activeMenu==='events'">
+
+      <!-- LIST VIEW -->
+      <ng-container *ngIf="eventFormMode==='list'">
+        <div class="news-mgmt-toolbar">
+          <div class="news-count">
+            <i class="fa fa-calendar"></i>
+            <strong>{{ eventList.length }}</strong> Acara Terdaftar
+          </div>
+          <button class="btn-create" (click)="openEventCreate()">
+            <i class="fa fa-plus"></i> Tambah Acara
+          </button>
+        </div>
+
+        <!-- Empty -->
+        <div class="coming-soon" *ngIf="eventList.length===0">
+          <div class="coming-icon"><i class="fa fa-calendar-o"></i></div>
+          <h3>Belum Ada Acara</h3>
+          <p>Klik "+ Tambah Acara" untuk menambahkan turnamen atau kejuaraan baru.</p>
+        </div>
+
+        <!-- Event Cards -->
+        <div class="event-admin-grid" *ngIf="eventList.length>0">
+          <div class="event-admin-card" *ngFor="let ev of eventList; let i=index">
+            <!-- Banner -->
+            <div class="event-card-banner"
+              [style.background-image]="ev.imageUrl ? 'url('+ev.imageUrl+')' : 'none'"
+              [style.background]="!ev.imageUrl ? 'linear-gradient(135deg,#1a2035 0%,#2d3a5e 100%)' : ''">
+              <span class="event-status-badge" [style.background]="eventStatusColor(ev)">
+                {{ eventStatusLabel(ev) }}
+              </span>
+              <span class="event-tier-badge" [style.background]="ev.tierColor">{{ ev.tierLabel }}</span>
+            </div>
+            <div class="event-card-body">
+              <div class="event-card-name">{{ ev.name || '(Belum ada nama)' }}</div>
+              <div class="event-card-meta">
+                <span><i class="fa fa-calendar"></i> {{ ev.dateLabel || ((ev.dateStart || '') + (ev.dateEnd ? ' - ' + ev.dateEnd : '')) || '-' }}</span>
+                <span><i class="fa fa-building"></i> {{ ev.venue || '-' }}</span>
+                <span><i class="fa fa-map-marker"></i> {{ ev.location || '-' }}</span>
+                <span *ngIf="ev.prizeMoney"><i class="fa fa-money" style="color:#f06b25"></i> {{ ev.prizeMoney }}</span>
+              </div>
+              <div class="event-card-cabang" *ngIf="ev.categories?.length">
+                <span class="cabang-chip" *ngFor="let c of ev.categories">{{ c }}</span>
+              </div>
+              <div *ngIf="ev.completed && (ev.championsMs || ev.championsWs)" class="event-champions">
+                <span *ngIf="ev.championsMs"><i class="fa fa-trophy" style="color:#f06b25"></i> MS: {{ ev.championsMs }}</span>
+                <span *ngIf="ev.championsWs"><i class="fa fa-trophy" style="color:#e91e63"></i> WS: {{ ev.championsWs }}</span>
+              </div>
+              <p class="event-card-desc" *ngIf="ev.deskripsi">{{ ev.deskripsi }}</p>
+            </div>
+            <div class="event-card-actions">
+              <button class="btn-edit" (click)="openEventEdit(i)"><i class="fa fa-pencil"></i> Edit</button>
+              <button class="btn-delete" (click)="deleteEvent(i)"><i class="fa fa-trash"></i> Hapus</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- CREATE / EDIT FORM -->
+      <ng-container *ngIf="eventFormMode==='edit' || eventFormMode==='create'">
+        <div class="news-form-header">
+          <button class="btn-back-list" (click)="eventFormMode='list'">
+            <i class="fa fa-arrow-left"></i> Kembali
+          </button>
+          <span class="news-form-id">
+            {{ eventFormMode==='create' ? 'Tambah Acara Baru' : 'Edit: '+eventForm.name }}
+          </span>
+        </div>
+
+        <div class="event-form-card">
+
+          <!-- SECTION 1: Identitas Acara -->
+          <div class="event-form-section">
+            <div class="event-form-section-label"><i class="fa fa-trophy"></i>Identitas Acara</div>
+            <div class="form-group">
+              <label><i class="fa fa-font"></i>Nama Acara / Turnamen <span style="color:#e74c3c">*</span></label>
+              <input type="text" [(ngModel)]="eventForm.name" class="form-input" placeholder="Turnamen Terbuka Sukabumi 2026" />
+            </div>
+            <div class="event-form-row">
+              <div class="form-group" style="flex:1;justify-content:flex-end">
+                <label><i class="fa fa-check-circle"></i>Status</label>
+                <label class="cabang-check" style="width:fit-content">
+                  <input type="checkbox" [(ngModel)]="eventForm.completed" />
+                  <span>Tandai Selesai</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SECTION 2: Waktu & Tempat -->
+          <div class="event-form-section">
+            <div class="event-form-section-label"><i class="fa fa-calendar"></i>Waktu &amp; Tempat</div>
+            <div class="event-form-row">
+              <div class="form-group" style="flex:1">
+                <label><i class="fa fa-calendar"></i>Tanggal Mulai <span style="color:#e74c3c">*</span></label>
+                <input type="date" [(ngModel)]="eventForm.dateStart" class="form-input" />
+              </div>
+              <div class="form-group" style="flex:1">
+                <label><i class="fa fa-calendar-check-o"></i>Tanggal Selesai <span style="color:#e74c3c">*</span></label>
+                <input type="date" [(ngModel)]="eventForm.dateEnd" class="form-input" />
+              </div>
+              <div class="form-group" style="flex:1">
+                <label><i class="fa fa-money"></i>Uang Hadiah</label>
+                <input type="text" [(ngModel)]="eventForm.prizeMoney" class="form-input" placeholder="Rp 15.000.000" />
+              </div>
+            </div>
+            <div class="event-form-row">
+              <div class="form-group" style="flex:2">
+                <label><i class="fa fa-building"></i>Nama Venue / GOR</label>
+                <input type="text" [(ngModel)]="eventForm.venue" class="form-input" placeholder="GOR Pemuda Sukabumi" />
+              </div>
+              <div class="form-group" style="flex:2">
+                <label><i class="fa fa-map-marker"></i>Lokasi / Kota</label>
+                <input type="text" [(ngModel)]="eventForm.location" class="form-input" placeholder="Sukabumi, Jawa Barat" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: Cabang Pertandingan -->
+          <div class="event-form-section">
+            <div class="event-form-section-label"><i class="fa fa-list-ul"></i>Cabang Pertandingan</div>
+            <div class="cabang-checkbox-group">
+              <label class="cabang-check" *ngFor="let cb of cabangOptions">
+                <input type="checkbox" [checked]="isCabangSelected(cb)" (change)="toggleCabang(cb)" />
+                <span>{{ cb }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- SECTION 4: Hasil Juara (hanya jika selesai) -->
+          <div class="event-form-section" *ngIf="eventForm.completed">
+            <div class="event-form-section-label"><i class="fa fa-trophy"></i>Hasil Juara</div>
+            <div class="event-form-row">
+              <div class="form-group" style="flex:1">
+                <label><i class="fa fa-trophy" style="color:#f06b25"></i>Juara Men's Singles</label>
+                <input type="text" [(ngModel)]="eventForm.championsMs" class="form-input" placeholder="Nama Pemain" />
+              </div>
+              <div class="form-group" style="flex:1">
+                <label><i class="fa fa-trophy" style="color:#e91e63"></i>Juara Women's Singles</label>
+                <input type="text" [(ngModel)]="eventForm.championsWs" class="form-input" placeholder="Nama Pemain" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 5: Deskripsi & Banner -->
+          <div class="event-form-section">
+            <div class="event-form-section-label"><i class="fa fa-info-circle"></i>Deskripsi &amp; Media</div>
+            <div class="form-group">
+              <label><i class="fa fa-align-left"></i>Deskripsi Singkat</label>
+              <textarea [(ngModel)]="eventForm.deskripsi" class="form-input" rows="3"
+                placeholder="Informasi tambahan tentang acara ini..."></textarea>
+            </div>
+            <div class="form-group">
+              <label><i class="fa fa-image"></i>URL Gambar Banner</label>
+              <input type="text" [(ngModel)]="eventForm.imageUrl" class="form-input" placeholder="https://... atau assets/articleimages/..." />
+              <small class="form-hint">Kosongkan untuk background gradasi default. Ukuran ideal: 1200x400px.</small>
+            </div>
+            <div *ngIf="eventForm.imageUrl" class="event-banner-preview"
+              [style.background-image]="'url('+eventForm.imageUrl+')'">
+              <span class="event-tier-badge" [style.background]="eventForm.tierColor">{{ eventForm.tierLabel }}</span>
+            </div>
+          </div>
+
+          <button class="btn-save" (click)="saveEvent()" [disabled]="!eventForm.name?.trim()">
+            <i class="fa fa-save"></i>
+            {{ eventFormMode==='create' ? 'Simpan Acara' : 'Simpan Perubahan' }}
+          </button>
+        </div>
+      </ng-container>
+    </div>
+    <!-- ===== POOL MANAGEMENT ===== -->
+    <div class="admin-content" *ngIf="activeMenu==='pool'">
+
+      <!-- LIST VIEW -->
+      <ng-container *ngIf="poolFormMode==='list'">
+        <div class="news-mgmt-toolbar" style="flex-wrap:wrap;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1">
+            <span style="font-size:12px;font-weight:700;color:#7e8299;white-space:nowrap">
+              <i class="fa fa-filter" style="color:#f06b25;margin-right:5px"></i>Pilih Event:
+            </span>
+            <select class="form-input" style="max-width:320px;margin:0"
+              [(ngModel)]="selectedPoolAdminEvent">
+              <option value="">-- Pilih Event --</option>
+              <option *ngFor="let ev of poolAdminEvents" [value]="ev">{{ ev }}</option>
+            </select>
+          </div>
+          <button class="btn-create" (click)="openPoolCreate()" *ngIf="selectedPoolAdminEvent">
+            <i class="fa fa-plus"></i> Tambah Pool
+          </button>
+        </div>
+
+        <!-- No event selected -->
+        <div class="coming-soon" *ngIf="!selectedPoolAdminEvent">
+          <div class="coming-icon"><i class="fa fa-hand-pointer-o"></i></div>
+          <h3>Pilih Event Terlebih Dahulu</h3>
+          <p>Gunakan dropdown di atas untuk memilih event, lalu kelola data pool-nya.</p>
+        </div>
+
+        <!-- Search & Cabang Filter toolbar -->
+        <div *ngIf="selectedPoolAdminEvent" class="pool-list-toolbar">
+          <!-- Search input -->
+          <div class="pool-search-wrap">
+            <i class="fa fa-search pool-search-icon"></i>
+            <input type="text" [(ngModel)]="poolSearchQuery"
+              placeholder="Cari pemain, PTM, atau nama pool..."
+              class="form-input pool-search-input" />
+          </div>
+
+          <!-- Cabang filter pills -->
+          <div class="pool-cabang-filters" *ngIf="poolListCabangOptions.length > 1">
+            <button class="cabang-pill"
+              [class.active]="selectedPoolAdminCabang===''"
+              (click)="selectedPoolAdminCabang=''">
+              Semua
+            </button>
+            <button class="cabang-pill"
+              *ngFor="let c of poolListCabangOptions"
+              [class.active]="selectedPoolAdminCabang===c"
+              (click)="selectedPoolAdminCabang=c">
+              {{ c }}
+            </button>
+          </div>
+
+          <!-- Count -->
+          <span class="pool-list-count">
+            {{ filteredSearchPools.length }} pool
+          </span>
+        </div>
+
+        <!-- Pool grid -->
+        <ng-container *ngIf="selectedPoolAdminEvent">
+          <div class="coming-soon" *ngIf="filteredAdminPools.length===0">
+            <div class="coming-icon"><i class="fa fa-inbox"></i></div>
+            <h3>Belum Ada Pool</h3>
+            <p>Klik "+ Tambah Pool" untuk membuat pool pertama pada event ini.</p>
+          </div>
+
+          <div *ngIf="filteredAdminPools.length > 0 && filteredSearchPools.length === 0"
+               style="text-align:center;padding:32px;color:#aaa">
+            <i class="fa fa-search" style="font-size:2rem;margin-bottom:12px;display:block"></i>
+            Tidak ada pool yang cocok dengan pencarian "<strong>{{ poolSearchQuery }}</strong>"
+          </div>
+
+          <!-- 3-col pool grid -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px">
+            <div class="pool-compact-card" *ngFor="let pool of filteredSearchPools; let pi=index">
+
+              <!-- Card header -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(90deg,#1a2035,#2d3a5e);border-radius:10px 10px 0 0">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <i class="fa fa-th-list" style="color:#f06b25;font-size:12px"></i>
+                  <span style="font-weight:700;color:#fff;font-size:13px">{{ pool.name }}</span>
+                  <span *ngIf="pool.cabang" style="background:#f06b25;color:#fff;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:600">{{ pool.cabang }}</span>
+                </div>
+                <div style="display:flex;gap:6px">
+                  <button class="btn-edit" (click)="openPoolEdit(getPoolRealIndex(pool))" style="padding:4px 10px;font-size:11px">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button class="btn-delete" (click)="deletePool(getPoolRealIndex(pool))" style="padding:4px 10px;font-size:11px">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Standing table -->
+              <div style="padding:0;overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;font-size:12px">
+                  <thead>
+                    <tr style="background:#f5f7fa">
+                      <th style="padding:6px 8px;text-align:left;color:#7e8299;font-weight:600;width:24px">#</th>
+                      <th style="padding:6px 8px;text-align:left;color:#7e8299;font-weight:600">Pemain (PTM)</th>
+                      <th *ngFor="let t of pool.teams" style="padding:6px 4px;text-align:center;color:#7e8299;font-weight:600;width:28px">{{ t.no }}</th>
+                      <th style="padding:6px 4px;text-align:center;color:#27ae60;font-weight:700;width:28px">M</th>
+                      <th style="padding:6px 4px;text-align:center;color:#e74c3c;font-weight:700;width:28px">K</th>
+                      <th style="padding:6px 4px;text-align:center;color:#f06b25;font-weight:700;width:36px">Nilai</th>
+                      <th style="padding:6px 4px;text-align:center;color:#7e8299;font-weight:600;width:28px">Urt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let t of pool.teams; let ri=index"
+                        style="border-bottom:1px solid #f0f2f5"
+                        [style.background]="t.urt===1 ? '#fffbf0' : 'transparent'">
+                      <td style="padding:7px 8px;color:#7e8299;font-weight:600;font-size:11px">{{ t.no }}</td>
+                      <td style="padding:7px 8px;font-weight:600;color:#1a2035;font-size:12px">
+                        {{ t.player || '-' }}
+                        <span *ngIf="t.ptm" style="display:block;font-size:10px;color:#aaa;font-weight:400">{{ t.ptm }}</span>
+                      </td>
+                      <td *ngFor="let r of t.results; let ci=index"
+                          style="padding:4px;text-align:center"
+                          [style.background]="ri===ci ? '#1a2035' : 'transparent'">
+                        <span *ngIf="ri!==ci && r===1" style="display:inline-block;width:20px;height:20px;line-height:20px;border-radius:4px;background:#e8f5e9;color:#27ae60;font-size:10px;font-weight:700;text-align:center">M</span>
+                        <span *ngIf="ri!==ci && r===0" style="display:inline-block;width:20px;height:20px;line-height:20px;border-radius:4px;background:#fdecea;color:#e74c3c;font-size:10px;font-weight:700;text-align:center">K</span>
+                      </td>
+                      <td style="padding:4px;text-align:center;font-weight:700;color:#27ae60">{{ t.menang }}</td>
+                      <td style="padding:4px;text-align:center;font-weight:700;color:#e74c3c">{{ t.kalah }}</td>
+                      <td style="padding:4px;text-align:center;font-weight:700;color:#f06b25">{{ t.nilai }}</td>
+                      <td style="padding:4px;text-align:center;font-weight:600;color:#1a2035">{{ t.urt }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Schedule mini -->
+              <div *ngIf="pool.schedule && pool.schedule.length"
+                   style="border-top:1px solid #f0f2f5;padding:8px 14px">
+                <div *ngFor="let s of pool.schedule"
+                     style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11px;color:#555;border-bottom:1px dotted #eee">
+                  <span style="color:#f06b25;font-weight:700;min-width:16px">{{ s.m }}</span>
+                  <span style="flex:1;font-weight:600">{{ s.acara }}</span>
+                  <span style="color:#aaa;white-space:nowrap">{{ s.hari || '-' }} {{ s.jam || '' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+
+
+      <!-- EDIT / CREATE FORM -->
+      <ng-container *ngIf="poolFormMode==='edit' && poolForm">
+        <div class="news-form-header">
+          <button class="btn-back-list" (click)="poolFormMode='list';poolForm=null">
+            <i class="fa fa-arrow-left"></i> Kembali
+          </button>
+          <span class="news-form-id">
+            {{ editingPoolIndex!==null ? 'Edit '+poolForm.name : 'Tambah Pool Baru' }}
+            <small>{{ poolForm.event }}</small>
+          </span>
+        </div>
+
+        <div class="pool-form-card">
+          <!-- Baris info pool -->
+          <div class="event-form-row">
+            <div class="form-group" style="flex:1">
+              <label><i class="fa fa-tag" style="color:#f06b25;margin-right:6px"></i>Nama Pool</label>
+              <input type="text" [(ngModel)]="poolForm.name" class="form-input" placeholder="POOL 1" />
+            </div>
+            <div class="form-group" style="flex:2">
+              <label><i class="fa fa-trophy" style="color:#f06b25;margin-right:6px"></i>Event</label>
+              <select [(ngModel)]="poolForm.event" class="form-input" (ngModelChange)="onPoolEventChange()">
+                <option *ngFor="let ev of poolAdminEvents" [value]="ev">{{ ev }}</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1">
+              <label><i class="fa fa-list-ul" style="color:#f06b25;margin-right:6px"></i>Cabang</label>
+              <select [(ngModel)]="poolForm.cabang" class="form-input">
+                <option value="">-- Pilih Cabang --</option>
+                <option *ngFor="let c of poolCabangOptions" [value]="c">{{ c }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TABEL PEMAIN -->
+          <div class="pool-form-section-title">
+            <i class="fa fa-users"></i> Data Pemain & Hasil
+            <div style="margin-left:auto;display:flex;gap:8px">
+              <button class="btn-create" style="padding:4px 12px;font-size:11px" (click)="addPoolTeam()">
+                <i class="fa fa-user-plus"></i> Tambah Pemain
+              </button>
+            </div>
+          </div>
+
+          <div class="news-table-wrap">
+            <table class="news-table pool-edit-table">
+              <thead>
+                <tr>
+                  <th style="width:36px">NO</th>
+                  <th>NAMA PEMAIN</th>
+                  <th>PTM</th>
+                  <th *ngFor="let t of poolForm.teams" style="min-width:55px;text-align:center">VS {{ t.no }}</th>
+                  <th style="width:60px;text-align:center">M</th>
+                  <th style="width:60px;text-align:center">K</th>
+                  <th style="width:60px;text-align:center">NILAI</th>
+                  <th style="width:55px;text-align:center">URT</th>
+                  <th style="width:36px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let t of poolForm.teams; let ri=index">
+                  <td class="pool-no">{{ t.no }}</td>
+                  <td class="pool-player-cell">
+                    <div class="player-search-wrap">
+                      <!-- Input: shows selected name or search query -->
+                      <div class="player-search-input-row">
+                        <input type="text"
+                          class="form-input player-search-input"
+                          [(ngModel)]="t.playerSearch"
+                          (focus)="openPoolDropdown(t, $event)"
+                          (input)="openPoolDropdown(t, $event)"
+                          (blur)="closePoolDropdown(t)"
+                          placeholder="🔍 Cari pemain..." />
+                        <button *ngIf="t.player" class="player-clear-btn" type="button"
+                          (click)="clearPoolPlayer(t)" title="Hapus pilihan">✕</button>
+                      </div>
+                      <!-- Selected badge -->
+                      <div *ngIf="t.player && !t.showDropdown" class="player-selected-badge">
+                        <i class="fa fa-user"></i> {{ t.player }}
+                      </div>
+                      <!-- Dropdown list — position:fixed to escape table overflow clipping -->
+                      <div class="player-search-dropdown psd-fixed" *ngIf="t.showDropdown"
+                        [style.top.px]="poolDropdownPos.top"
+                        [style.left.px]="poolDropdownPos.left"
+                        [style.width.px]="poolDropdownPos.width">
+                        <div class="psd-empty" *ngIf="getFilteredPoolPlayers(t.playerSearch).length===0">
+                          Pemain tidak ditemukan
+                        </div>
+                        <div class="psd-item"
+                          *ngFor="let pl of getFilteredPoolPlayers(t.playerSearch)"
+                          (mousedown)="selectPoolPlayer(t, pl)">
+                          <span class="psd-name">{{ pl.fullName || (pl.lastName + ' ' + pl.firstName) }}</span>
+                          <span class="psd-ptm" *ngIf="pl.ptm">{{ pl.ptm }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><input type="text" [(ngModel)]="t.ptm" class="form-input" placeholder="PTM" style="color:#888" /></td>
+                  <td *ngFor="let r of t.results; let ci=index" style="text-align:center;padding:4px">
+                    <span *ngIf="ri===ci" class="pool-self-cell" style="display:inline-block;width:32px;height:32px;background:#1a2035;border-radius:3px"></span>
+                    <select *ngIf="ri!==ci" [(ngModel)]="t.results[ci]" class="form-input" style="width:54px;padding:4px 2px;text-align:center">
+                      <option [ngValue]="null">-</option>
+                      <option [ngValue]="1">M</option>
+                      <option [ngValue]="0">K</option>
+                    </select>
+                  </td>
+                  <td><input type="number" [(ngModel)]="t.menang" class="form-input" style="width:56px;text-align:center" min="0" /></td>
+                  <td><input type="number" [(ngModel)]="t.kalah"  class="form-input" style="width:56px;text-align:center" min="0" /></td>
+                  <td><input type="number" [(ngModel)]="t.nilai"  class="form-input" style="width:56px;text-align:center" min="0" /></td>
+                  <td><input type="number" [(ngModel)]="t.urt"    class="form-input" style="width:50px;text-align:center" min="1" /></td>
+                  <td>
+                    <button class="btn-delete" (click)="removePoolTeam(ri)" title="Hapus" style="padding:5px 8px" *ngIf="poolForm.teams.length>1">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- JADWAL -->
+          <div class="pool-form-section-title" style="margin-top:22px">
+            <i class="fa fa-calendar"></i> Jadwal Pertandingan
+            <button class="btn-create" style="margin-left:auto;padding:4px 12px;font-size:11px" (click)="addPoolScheduleRow()">
+              <i class="fa fa-plus"></i> Baris
+            </button>
+          </div>
+          <div class="news-table-wrap">
+            <table class="news-table pool-edit-table">
+              <thead>
+                <tr>
+                  <th>HARI / TGL</th>
+                  <th style="width:90px">JAM</th>
+                  <th style="width:60px">M</th>
+                  <th>ACARA / LAWAN</th>
+                  <th style="width:40px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of poolForm.schedule; let si=index">
+                  <td><input type="text" [(ngModel)]="s.hari"  class="form-input" placeholder="SABTU" /></td>
+                  <td><input type="text" [(ngModel)]="s.jam"   class="form-input" placeholder="08.00" /></td>
+                  <td><input type="number" [(ngModel)]="s.m"   class="form-input" style="width:55px" min="1" /></td>
+                  <td><input type="text" [(ngModel)]="s.acara" class="form-input" placeholder="1 VS 2" /></td>
+                  <td>
+                    <button class="btn-delete" (click)="removePoolScheduleRow(si)" style="padding:5px 8px">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <button class="btn-save" (click)="savePool()" style="margin-top:18px">
+            <i class="fa fa-save"></i>
+            {{ editingPoolIndex!==null ? 'Simpan Perubahan' : 'Simpan Pool' }}
+          </button>
+        </div>
+      </ng-container>
+
+    </div>
+  </main>
+</div>
+
+
+
+
+

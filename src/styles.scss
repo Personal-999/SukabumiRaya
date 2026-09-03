@@ -1,0 +1,164 @@
+// ============================================================
+// WTT GLOBAL STYLES — rekonstruksi berbasis analisis kode
+// Sumber: wtt-reference-styles.css
+// ============================================================
+
+// @font-face Bio Sans — dari CDN ITTF (documentstore.ittf.com)
+@font-face {
+  font-family: "Bio Sans";
+  src: url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-Regular.woff2") format("woff2"),
+       url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bio Sans";
+  src: url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-Bold.woff2") format("woff2"),
+       url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bio Sans";
+  src: url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-SemiBold.woff2") format("woff2"),
+       url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bio Sans";
+  src: url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-ExtraBold.woff2") format("woff2"),
+       url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-ExtraBold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bio Sans";
+  src: url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-Light.woff2") format("woff2"),
+       url("https://documentstore.ittf.com/websitefiles/assets/font/biosans/BioSans-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+// CSS Custom Properties — tema WTT (dari :root wtt-reference-styles.css baris 3-81)
+:root {
+  --c-theme-color: #FF6B00;
+  --c-theme-colors: #ff4224;
+  --c-theme-color-darker: #e76922;
+  --c-theme-gradient: linear-gradient(90deg, #f37822 0%, #d45022 45%, #e6342d 100%);
+  --c-theme-gradient-alt: linear-gradient(45deg, #e6342d 0%, #d45022 45%, #f37822 100%);
+  --c-theme-blue-gradient: linear-gradient(90deg, #0a9ab3 0%, #3298b3 45%, #022e6d 100%);
+  --c-theme-glow-blue: #2babd2;
+  --c-theme-red-color: #d01717;
+  --c-theme-green-color: #088423;
+  --c-common-border-rounded-radius: 2px;
+  --c-common-border-rounded-radius-mid: 5px;
+  --c-common-border-rounded-radius-large: 10px;
+  --c-common-box-shadow: 0 0 40px #efeded;
+  --c-row-highlight-color: rgba(232, 105, 34, 0.18);
+  --c-teams-theme-color: #409a32;
+  --c-teams-theme-gradient-color: linear-gradient(180deg, #409a36 0%, #00923f 45%, #065748 100%);
+  --c-teams-red-theme-gradient: #DE2726;
+  --teams-theme-border-color: #409a32;
+  --teams-red-theme-border-color: #DE2726;
+  --event-default-bg-color: #000;
+  --event-modal-bg-color: #222;
+  --teams-sections-bg-color: rgba(0,0,0,0.65);
+  --teams-event-card-text-color: #ffc107;
+  --teams-bracket-default-item-bg: #fff;
+  --teams-theme-score-color: #858383;
+  --c-tier-theme-color: #db4526;
+  --c-tier-theme-color-match-card: #db4526;
+  --c-tier-theme-color-header-score-card: #e76922;
+}
+
+// BODY FINAL (dari baris 34046–34066 — paling bawah, menang cascade)
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  font-family: "Bio Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+body {
+  background-color: #fff;
+  color: #222;
+}
+
+a { text-decoration: none; color: var(--c-theme-color); }
+a:hover { color: var(--c-theme-color-darker); }
+p { margin: 0; }
+
+// Utilitas tema global
+.theme-gradient { background: var(--c-theme-gradient); }
+.theme-color { color: var(--c-theme-color); }
+.text-protect {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 92%;
+}
+.zoom-on-hover {
+  transition: all 0.2s ease-in-out;
+  &:hover { transform: scale(1.05); }
+}
+.pointer { cursor: pointer; }
+
+// ============================================================
+// GLOBAL LIGHT THEME — sesuai web asli worldtabletennis.com
+// ============================================================
+html, body {
+  background: #fff !important;
+  color: #222;
+  min-height: 100vh;
+}
+
+// home-card white background
+.home-card {
+  background: #fff;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+.home-card-content {
+  background: #fff;
+  color: #222;
+}
+
+// Text in content areas
+.content-title span { color: #222 !important; }
+.article_list_right_container .content-title span { color: #222 !important; }
+
+// Form controls
+.form-control {
+  background: #f8f8f8;
+  border-color: #ddd;
+  color: #222;
+  &:focus { border-color: var(--c-theme-color); box-shadow: none; }
+}
+
+// Table
+table { background: #fff; color: #222; }
+thead th { color: #555; border-color: #eee; }
+tbody td { border-color: #f0f0f0; color: #333; }
+tbody tr:hover { background: #fafafa; }
+
+// Rankings
+.top_rank_card_holder { background: #fff; border: 1px solid #eee; }
+.toprank_person_row { border-bottom: 1px solid #f0f0f0; color: #222; }
+.rank_holder { color: #222 !important; }
+.name_holder { color: #222 !important; }
+.points_holder { color: var(--c-theme-color) !important; }
+
+

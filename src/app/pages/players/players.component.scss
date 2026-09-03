@@ -1,0 +1,490 @@
+:host { display: block; background: #fff; font-family: "Bio Sans", sans-serif; }
+
+/* ===== HEADER ===== */
+.players-header {
+  background: #111;
+  padding: 14px 32px;
+}
+.players-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+/* ===== BODY ===== */
+.players-body {
+  padding: 7px 19.5px;
+  margin-bottom: 20px;
+  color: rgb(33, 37, 41);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.players-subtitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #212529;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 12px 0 10px;
+}
+
+/* ===== FILTER BAR ===== */
+.common_filter_bar {
+  display: flex;
+  align-items: center;
+  width: calc(100% + 30px);
+  min-height: 67px;
+  background-color: rgb(228, 228, 228);
+  color: rgb(68, 68, 68);
+  padding: 12px 15px;
+  margin: 0 -15px 10px -15px;
+  border-radius: 5px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Search */
+.search-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+  max-width: 500px;
+  height: 40px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.search-input {
+  flex: 1;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-family: "Bio Sans", sans-serif;
+  color: #333;
+  outline: none;
+  background: transparent;
+  &::placeholder { color: #aaa; }
+}
+.search-btn {
+  width: 42px;
+  height: 100%;
+  background: #f06b25;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s;
+  &:hover { background: #d45a10; }
+}
+
+/* Gender Radio */
+.gender-radios {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.radio-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: #444;
+  user-select: none;
+
+  input[type="radio"] {
+    accent-color: #f06b25;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  span { line-height: 1; }
+}
+
+/* ===== DIVISI PILLS ===== */
+.divisi-pills {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.divisi-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border: 1.5px solid #ddd;
+  border-radius: 50px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+  font-family: "Bio Sans", sans-serif;
+  transition: all .2s;
+  line-height: 1;
+  white-space: nowrap;
+
+  &:hover { border-color: #aaa; color: #333; background: #f5f5f5; }
+  &.active { background: #212529; border-color: #212529; color: #fff; }
+}
+
+/* ===== DIVISI BADGE (in table) ===== */
+.td-divisi {
+  text-align: center;
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+.divisi-badge {
+  display: inline;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Bio Sans", sans-serif;
+  letter-spacing: 0;
+  color: rgb(33, 37, 41);
+}
+/* Warna subtle per divisi — tetap readable tanpa background */
+.divisi-A { color: #1a6fc4; }
+.divisi-B { color: #2a9d5c; }
+.divisi-C { color: #c41a6f; }
+.divisi-D { color: #c47a1a; }
+
+/* ===== TABLE ===== */
+.players-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.players-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Bio Sans", sans-serif;
+  table-layout: fixed;
+  min-width: 500px;
+}
+
+/* Header */
+thead tr {
+  border-bottom: 2px solid #eee;
+}
+thead th {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 12px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Column sizing — percentage based for even distribution */
+.th-rank    { width: 5%;  text-align: center; }
+.th-name    { width: 35%; text-align: left !important; }
+.th-divisi  { width: 10%; text-align: center; padding: 10px 12px; }
+.th-ptm     { width: 22%; text-align: center; }
+.th-gender  { width: 15%; text-align: center; }
+.th-age     { width: 8%;  text-align: center; }
+
+/* Rows */
+tbody tr.player-row {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background .15s;
+  &:hover { background: #fafafa; }
+}
+tbody td {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: rgb(33, 37, 41);
+  vertical-align: middle;
+}
+
+/* Rank cell */
+.td-rank {
+  font-size: 13px;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+}
+
+/* Player name cell */
+.td-name { overflow: hidden; text-align: left !important; }
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.player-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f0f0f0;
+  border: 1.5px solid #eee;
+  flex-shrink: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+.player-name {
+  font-size: 14px;
+  line-height: 1.3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 3px;
+}
+.last-name {
+  font-weight: 700;
+  color: #212529;
+  text-transform: uppercase;
+}
+.first-name {
+  font-weight: 400;
+  color: #f06b25;
+}
+
+/* PTM cell */
+.td-ptm {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  padding: 10px 12px;
+}
+
+/* Ranking */
+.td-ranking {
+  text-align: center;
+  font-size: 14px;
+  color: #212529;
+}
+
+/* Gender */
+.td-gender {
+  text-align: center;
+  font-size: 14px;
+  color: #212529;
+  font-weight: 600;
+}
+
+/* Age */
+.td-age {
+  text-align: center;
+  font-size: 14px;
+  color: #212529;
+}
+
+/* Empty */
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #aaa;
+  font-size: 14px;
+  i { margin-right: 8px; }
+}
+
+/* Count */
+.players-count {
+  margin-top: 14px;
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+}
+
+/* ===========================
+   RESPONSIVE — MOBILE
+   =========================== */
+
+/* Tablet (≤768px) */
+@media (max-width: 768px) {
+  .players-body {
+    padding: 8px 12px;
+  }
+  .common_filter_bar {
+    width: calc(100% + 24px);
+    margin: 0 -12px 10px -12px;
+    padding: 10px 12px;
+    min-height: auto;
+    gap: 8px;
+  }
+  .search-wrap {
+    min-width: 100%;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+  .gender-radios {
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+  .radio-label {
+    font-size: 15px;
+  }
+
+  .divisi-pills {
+    gap: 6px;
+  }
+  .divisi-pill {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+
+  /* Hide ranking column on tablet */
+  .th-ranking, .td-ranking { display: none; }
+}
+
+/* Mobile (≤480px) */
+@media (max-width: 480px) {
+  .players-header { padding: 12px 16px; }
+  .players-body { padding: 6px 10px; }
+
+  .players-subtitle {
+    font-size: 0.95rem;
+  }
+
+  /* Compact filter bar */
+  .common_filter_bar {
+    width: calc(100% + 20px);
+    margin: 0 -10px 10px -10px;
+    padding: 8px 10px;
+  }
+  .search-wrap { height: 36px; }
+  .search-input { font-size: 13px; padding: 6px 10px; }
+  .search-btn { width: 36px; font-size: 13px; }
+
+  /* Hide ranking + gender on mobile */
+  .th-ranking, .td-ranking,
+  .th-gender,  .td-gender  { display: none; }
+
+  /* Compact avatar */
+  .player-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .player-name { font-size: 13px; }
+  .last-name   { font-size: 13px; }
+  .first-name  { font-size: 12px; }
+
+  /* Compact badge */
+  .divisi-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+
+  tbody td { padding: 8px 6px; font-size: 13px; }
+  thead th { padding: 8px 6px; font-size: 10px; }
+
+  .divisi-pill { font-size: 11px; padding: 4px 10px; }
+}
+
+/* ===== PLAYER LINK (list → description) ===== */
+.player-link {
+  text-decoration: none; color: inherit; display: block;
+  &:hover .player-name { color: #f06b25; }
+}
+.player-flag { height: 14px; border-radius: 1px; margin-left: 8px; }
+.td-rank-val { color: #888; font-size: 12px; text-align: center; }
+
+/* ===== PLAYER DESCRIPTION PAGE ===== */
+.pdesc-page { background: #f5f5f5; min-height: 100vh; font-family: "Bio Sans", sans-serif; }
+
+.pdesc-not-found {
+  text-align: center; padding: 100px 20px; color: #888;
+  .fa { font-size: 48px; display: block; margin-bottom: 16px; color: #ddd; }
+  h2 { font-size: 1.4rem; color: #333; margin-bottom: 20px; }
+}
+.btn-back-list {
+  display: inline-block; padding: 10px 24px; background: #f06b25; color: #fff;
+  border-radius: 3px; text-decoration: none; font-size: 13px; font-weight: 700;
+}
+
+/* Header */
+.pdesc-header {
+  background: #111; padding: 16px 48px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.pdesc-header-inner { max-width: 1320px; margin: 0 auto; }
+.pdesc-breadcrumb {
+  display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,.5);
+  a { color: rgba(255,255,255,.5); text-decoration: none; &:hover { color: #f06b25; } }
+  .fa { font-size: 9px; }
+  span { color: #fff; font-weight: 600; }
+}
+
+/* Body */
+.pdesc-body {
+  display: grid; grid-template-columns: 340px 1fr; gap: 32px;
+  max-width: 1320px; margin: 0 auto; padding: 40px 24px 80px;
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
+}
+
+/* LEFT: Photo + Name */
+.pdesc-left { display: flex; flex-direction: column; align-items: center; }
+.pdesc-photo-wrap {
+  width: 280px; height: 360px; overflow: hidden; border-radius: 4px;
+  background: #000; box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  @media (max-width: 768px) { width: 200px; height: 260px; }
+}
+.pdesc-photo { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+
+.pdesc-name-block { text-align: center; margin-top: 20px; }
+.pdesc-lastName { font-size: 1.6rem; font-weight: 900; color: #111; text-transform: uppercase; letter-spacing: 1px; line-height: 1.1; }
+.pdesc-firstName { font-size: 1.1rem; font-weight: 400; color: #555; margin-top: 2px; }
+.pdesc-rank-badge {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+  background: #111; color: #fff; padding: 6px 16px; border-radius: 3px;
+  .rank-num { font-size: 1.4rem; font-weight: 900; color: #f06b25; }
+  .rank-lbl { font-size: 11px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; }
+}
+
+/* RIGHT: Details */
+.pdesc-right { display: flex; flex-direction: column; gap: 24px; }
+
+/* Info Grid */
+.pdesc-info-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: #e0e0e0; border-radius: 4px; overflow: hidden;
+  @media (max-width: 600px) { grid-template-columns: repeat(2, 1fr); }
+}
+.info-item {
+  background: #fff; padding: 16px 20px;
+  &:hover { background: #fafafa; }
+}
+.info-label { font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.info-value { font-size: 14px; font-weight: 700; color: #222; display: flex; align-items: center; gap: 8px; }
+.country-val img { height: 18px; border-radius: 2px; }
+.id-val { font-family: monospace; color: #f06b25; }
+.divisi-sub { font-size: 11px; color: #888; font-weight: 400; }
+
+/* Win Rate */
+.pdesc-winrate {
+  background: #fff; border-radius: 4px; padding: 20px 24px;
+  display: flex; align-items: center; gap: 16px;
+  .wr-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #aaa; white-space: nowrap; }
+  .wr-bar-wrap { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+  .wr-bar { height: 100%; background: #f06b25; border-radius: 4px; transition: width .5s; }
+  .wr-pct { font-size: 14px; font-weight: 800; color: #f06b25; white-space: nowrap; }
+}
+
+/* Biography */
+.pdesc-bio {
+  background: #fff; border-radius: 4px; padding: 24px;
+  .bio-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #111; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #f06b25; }
+  .bio-text { font-size: 14px; line-height: 1.8; color: #444; margin: 0; }
+}

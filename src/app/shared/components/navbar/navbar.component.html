@@ -1,0 +1,75 @@
+<!-- Navbar WTT — class dari wtt-reference-styles.css -->
+<div class="latest_header">
+  <div class="container-fluid">
+    <div class="row align-items-center" style="height:60px;">
+
+      <!-- Logo -->
+      <div class="col-lg-2 col-md-2 col-sm-3 col-4">
+        <a routerLink="/home" style="display:block;">
+          <img
+            class="header_main_logo"
+            src="assets/images/STT V1.png"
+            alt="WTT Logo"
+            style="height:38px; width:auto; object-fit:contain;" />
+        </a>
+      </div>
+
+      <!-- Desktop Nav -->
+      <div class="col-lg-7 col-md-8 d-none d-md-block">
+        <div class="wtt_menulist">
+          <ul style="margin:0; padding:0; list-style:none; display:flex; gap:4px;">
+            <li>
+              <a routerLink="/news" routerLinkActive="active_header">NEWS</a>
+            </li>
+            <li>
+              <a routerLink="/headervideo" routerLinkActive="active_header">VIDEO</a>
+            </li>
+            <li>
+              <a routerLink="/playerslist" routerLinkActive="active_header">PLAYERS</a>
+            </li>
+            <li>
+              <a routerLink="/eventslist" routerLinkActive="active_header">EVENTS</a>
+            </li>
+            <li>
+              <a routerLink="/matches" routerLinkActive="active_header">MATCHES</a>
+            </li>
+
+            <li>
+              <a routerLink="/livevideo" routerLinkActive="active_header"
+                style="display:flex; align-items:center; gap:4px;">
+                WATCH LIVE
+                <span class="live_dot" style="color:#f00; font-size:8px; animation:blink 1s infinite;">●</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+
+      <!-- Mobile hamburger -->
+      <div class="col-8 col-sm-9 d-md-none d-flex justify-content-end align-items-center" style="gap:12px;">
+        <span class="cursor" (click)="mobile_menu_open = !mobile_menu_open"
+          style="color:#fff; font-size:1.3rem; cursor:pointer; padding:4px 8px;">
+          <i class="fa" [class.fa-bars]="!mobile_menu_open" [class.fa-times]="mobile_menu_open"></i>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Mobile menu dropdown -->
+    <div class="wtt_mobile_menu_list d-md-none"
+      [class.show_menu]="mobile_menu_open"
+      [class.hide_menu]="!mobile_menu_open">
+      <ul style="margin:0; padding:0; list-style:none;">
+        <li><a routerLink="/news" routerLinkActive="active_header" (click)="closeMenu()">NEWS</a></li>
+        <li><a routerLink="/headervideo" routerLinkActive="active_header" (click)="closeMenu()">VIDEO</a></li>
+        <li><a routerLink="/playerslist" routerLinkActive="active_header" (click)="closeMenu()">PLAYERS</a></li>
+        <li><a routerLink="/eventslist" routerLinkActive="active_header" (click)="closeMenu()">EVENTS</a></li>
+        <li><a routerLink="/matches" routerLinkActive="active_header" (click)="closeMenu()">MATCHES</a></li>
+
+        <li><a routerLink="/livevideo" routerLinkActive="active_header" (click)="closeMenu()">WATCH LIVE</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

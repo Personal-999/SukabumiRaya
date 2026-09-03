@@ -1,0 +1,175 @@
+<!-- ============================================================ -->
+<!-- LIST VIEW (/playerslist)                                      -->
+<!-- ============================================================ -->
+<div class="players-page" *ngIf="viewMode === 'list'">
+  <div class="players-header">
+    <h1 class="players-title">PLAYERS</h1>
+  </div>
+
+  <div class="players-body container-fluid">
+    <h2 class="players-subtitle">PEMAIN TENIS MEJA SUKABUMI RAYA</h2>
+
+    <!-- FILTER BAR -->
+    <div class="row common_filter_bar">
+      <div class="search-wrap">
+        <input class="search-input" type="text" placeholder="Cari nama pemain..." [(ngModel)]="searchQuery" />
+        <button class="search-btn"><i class="fa fa-search"></i></button>
+      </div>
+      <div class="gender-radios">
+        <label class="radio-label">
+          <input type="radio" name="gender" value="Men" [(ngModel)]="selectedGender" (change)="selectGender('Men')" />
+          <span>Pria</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="gender" value="Women" [(ngModel)]="selectedGender" (change)="selectGender('Women')" />
+          <span>Wanita</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- DIVISI PILLS -->
+    <div class="divisi-pills">
+      <button *ngFor="let d of availableDivisi" class="divisi-pill"
+        [class.active]="selectedDivisi === d"
+        (click)="selectedDivisi = d">{{ d === 'All' ? 'Semua' : 'Divisi ' + d }}</button>
+    </div>
+
+    <!-- TABLE - klik row buka tab baru -->
+    <div class="players-table-wrap">
+      <table class="players-table">
+        <thead>
+          <tr>
+            <th class="th-rank">#</th>
+            <th class="th-name">NAMA PEMAIN</th>
+            <th class="th-divisi">DIVISI</th>
+            <th class="th-ptm">PTM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="player-row" *ngFor="let p of filteredPlayers; let i = index"
+              (click)="null"
+              style="cursor:pointer">
+            <td class="td-rank">{{ i + 1 }}</td>
+            <!-- Name - clickable link, same tab -->
+            <td class="td-name">
+              <a [href]="getPlayerUrl(p.id)" class="player-link">
+                <div class="player-info">
+                  <div class="player-avatar">
+                    <img [src]="getPhoto(p)" [alt]="p.fullName"
+                      onerror="this.src='https://wttwebcmsprod.blob.core.windows.net/websitefiles/images/general/men_default_left.png'" />
+                  </div>
+                  <span class="player-name">
+                    <span class="last-name">{{ p.lastName }}</span>
+                    <span class="first-name"> {{ p.firstName }}</span>
+                  </span>
+                </div>
+              </a>
+            </td>
+            <td class="td-divisi">
+              <span class="divisi-badge divisi-{{ p.divisi }}">{{ p.divisi }}</span>
+            </td>
+            <td class="td-ptm">{{ p.ptm || '-' }}</td>
+          </tr>
+
+          <tr *ngIf="filteredPlayers.length === 0">
+            <td colspan="6" class="no-results"><i class="fa fa-search"></i> Tidak ada pemain ditemukan.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="players-count">Menampilkan {{ filteredPlayers.length }} pemain</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DESCRIPTION VIEW (/playerDescription?playerId=xxx)           -->
+<!-- ============================================================ -->
+<div class="pdesc-page" *ngIf="viewMode === 'description'">
+
+  <!-- NOT FOUND -->
+  <div class="pdesc-not-found" *ngIf="!activePlayer">
+    <i class="fa fa-user-times"></i>
+    <h2>Pemain tidak ditemukan</h2>
+    <a href="/playerslist" class="btn-back-list">â† Kembali ke Daftar Pemain</a>
+  </div>
+
+  <!-- PLAYER FOUND -->
+  <ng-container *ngIf="activePlayer">
+
+    <!-- ===== DARK HEADER ===== -->
+    <div class="pdesc-header">
+      <div class="pdesc-header-inner">
+        <div class="pdesc-breadcrumb">
+          <a href="/playerslist">Pemain</a>
+          <i class="fa fa-chevron-right"></i>
+          <span>{{ activePlayer.fullName }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="pdesc-body">
+
+      <!-- LEFT: PHOTO + NAME + RANK -->
+      <div class="pdesc-left">
+        <div class="pdesc-photo-wrap">
+          <img [src]="getPhoto(activePlayer)" [alt]="activePlayer.fullName"
+            onerror="this.src='https://wttwebcmsprod.blob.core.windows.net/websitefiles/images/general/men_default_left.png'"
+            class="pdesc-photo" />
+        </div>
+        <div class="pdesc-name-block">
+          <div class="pdesc-lastName">{{ activePlayer.lastName }}</div>
+          <div class="pdesc-firstName">{{ activePlayer.firstName }}</div>
+          <div class="pdesc-rank-badge">
+            <span class="rank-num">{{ activePlayer.rank }}</span>
+            <span class="rank-lbl">{{ getDivisiLabel(activePlayer.divisi) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: DETAILS -->
+      <div class="pdesc-right">
+
+        <!-- Info Grid -->
+        <div class="pdesc-info-grid">
+          <div class="info-item">
+            <div class="info-label">Umur</div>
+            <div class="info-value">{{ activePlayer.age }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Jenis Kelamin</div>
+            <div class="info-value">{{ getGenderLabel(activePlayer.gender) }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Divisi</div>
+            <div class="info-value">
+              <span class="divisi-badge divisi-{{ activePlayer.divisi }}">Divisi {{ activePlayer.divisi }}</span>
+            </div>
+          </div>
+          <div class="info-item" *ngIf="activePlayer.ptm">
+            <div class="info-label">PTM</div>
+            <div class="info-value">{{ activePlayer.ptm }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Gaya Bermain</div>
+            <div class="info-value">{{ activePlayer.playingStyle }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">ID Pemain</div>
+            <div class="info-value id-val">#{{ activePlayer.id }}</div>
+          </div>
+        </div>
+
+
+        <!-- Biography -->
+        <div class="pdesc-bio" *ngIf="activePlayer.biography">
+          <div class="bio-title">Biografi</div>
+          <p class="bio-text">{{ activePlayer.biography }}</p>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+</div>
+

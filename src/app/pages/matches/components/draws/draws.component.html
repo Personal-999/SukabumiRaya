@@ -1,0 +1,211 @@
+<div class="draws-page">
+
+  <!-- Category tabs -->
+  <div class="draws-tabs">
+    <button class="draws-tab" *ngFor="let cat of categories; let i = index"
+      [class.active]="selectedCategory === i"
+      (click)="selectedCategory = i">
+      {{ cat.name }}
+    </button>
+  </div>
+
+  <!-- Bracket -->
+  <div class="bracket-scroll-wrap">
+    <div class="bracket-container">
+
+      <!-- Round headers row -->
+      <div class="bracket-rounds-header">
+        <ng-container *ngFor="let r of currentCategory.rounds; let ri = index">
+          <div class="round-header">{{ r }}</div>
+          <div class="round-header-gap" *ngIf="ri < currentCategory.rounds.length - 1"></div>
+        </ng-container>
+      </div>
+
+      <!-- Bracket body -->
+      <div class="bracket-body">
+
+        <ng-container *ngFor="let r of currentCategory.rounds; let ri = index">
+
+          <!-- ── Round column ──────────────────────────────── -->
+          <div class="round-col">
+            <div class="round-slots" [style.height.px]="getRoundColumnHeight()">
+
+              <ng-container *ngFor="let match of getRoundMatches(ri)">
+                <div class="bracket-match-group"
+                  [style.top.px]="getMatchTop(ri, match.slotIndex)"
+                  [class.is-tbd]="match.playerA?.isTbd && match.playerB?.isTbd">
+
+                  <!-- Player A row -->
+                  <ng-container *ngIf="!match.hasByeA">
+                    <div class="bracket-player-row"
+                      [class.is-winner]="match.playerA?.isWinner"
+                      [class.is-loser]="hasResult(match) && !match.playerA?.isWinner"
+                      [class.is-hovered]="hoveredMatch?.id === match.id"
+                      [class.is-tbd-row]="match.playerA?.isTbd"
+                      [class.is-path-highlight]="isPlayerHighlighted(match.playerA?.name)"
+                      [class.has-partner]="!!match.playerA?.partner"
+                      (mouseenter)="showPopup(match, $event); hoverPlayer(match.playerA?.name)"
+                      (mouseleave)="hidePopup(); unhoverPlayer()">
+                      <div class="bp-side">
+                        <!-- Main player -->
+                        <div class="bp-info">
+                          <img *ngIf="match.playerA?.flag && !match.playerA?.isTbd"
+                            [src]="'https://flagcdn.com/16x12/' + match.playerA.flag + '.png'"
+                            class="bp-flag" />
+                          <i class="fa fa-user bp-icon" *ngIf="!match.playerA?.isTbd"></i>
+                          <span class="bp-name">{{ match.playerA?.name }}</span>
+                          <span class="bp-seed" *ngIf="match.playerA?.seed">({{ match.playerA.seed }})</span>
+                        </div>
+                        <!-- Partner (doubles) -->
+                        <div class="bp-info bp-partner" *ngIf="match.playerA?.partner">
+                          <img *ngIf="match.playerA.partner.flag"
+                            [src]="'https://flagcdn.com/16x12/' + match.playerA.partner.flag + '.png'"
+                            class="bp-flag" />
+                          <i class="fa fa-user bp-icon"></i>
+                          <span class="bp-name">{{ match.playerA.partner.name }}</span>
+                        </div>
+                      </div>
+                      <div class="bp-score" [class.score-winner]="match.playerA?.isWinner">
+                        {{ match.playerA?.score !== undefined && match.playerA?.score !== null && !match.playerA?.isTbd ? match.playerA.score : '' }}
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <!-- BYE A -->
+                  <div class="bracket-bye-row"
+                    *ngIf="match.hasByeA"
+                    [class.is-bye-highlight]="isByeHighlighted"
+                    (mouseenter)="hoverBye()"
+                    (mouseleave)="unhoverBye()">BYE</div>
+
+                  <!-- Player B row -->
+                  <ng-container *ngIf="match.playerB && !match.hasByeB">
+                    <div class="bracket-player-row"
+                      [class.is-winner]="match.playerB?.isWinner"
+                      [class.is-loser]="hasResult(match) && !match.playerB?.isWinner"
+                      [class.is-hovered]="hoveredMatch?.id === match.id"
+                      [class.is-tbd-row]="match.playerB?.isTbd"
+                      [class.is-path-highlight]="isPlayerHighlighted(match.playerB?.name)"
+                      [class.has-partner]="!!match.playerB?.partner"
+                      (mouseenter)="showPopup(match, $event); hoverPlayer(match.playerB?.name)"
+                      (mouseleave)="hidePopup(); unhoverPlayer()">
+                      <div class="bp-side">
+                        <!-- Main player -->
+                        <div class="bp-info">
+                          <img *ngIf="match.playerB?.flag && !match.playerB?.isTbd"
+                            [src]="'https://flagcdn.com/16x12/' + match.playerB.flag + '.png'"
+                            class="bp-flag" />
+                          <i class="fa fa-user bp-icon" *ngIf="!match.playerB?.isTbd"></i>
+                          <span class="bp-name">{{ match.playerB?.name }}</span>
+                          <span class="bp-seed" *ngIf="match.playerB?.seed">({{ match.playerB.seed }})</span>
+                        </div>
+                        <!-- Partner (doubles) -->
+                        <div class="bp-info bp-partner" *ngIf="match.playerB?.partner">
+                          <img *ngIf="match.playerB.partner.flag"
+                            [src]="'https://flagcdn.com/16x12/' + match.playerB.partner.flag + '.png'"
+                            class="bp-flag" />
+                          <i class="fa fa-user bp-icon"></i>
+                          <span class="bp-name">{{ match.playerB.partner.name }}</span>
+                        </div>
+                      </div>
+                      <div class="bp-score" [class.score-winner]="match.playerB?.isWinner">
+                        {{ match.playerB?.score !== undefined && match.playerB?.score !== null && !match.playerB?.isTbd ? match.playerB.score : '' }}
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <!-- BYE B -->
+                  <div class="bracket-bye-row"
+                    *ngIf="match.hasByeB"
+                    [class.is-bye-highlight]="isByeHighlighted"
+                    (mouseenter)="hoverBye()"
+                    (mouseleave)="unhoverBye()">BYE</div>
+
+                  <!-- Date + Match Centre link (date_time_section) -->
+                  <div class="bracket-match-info"
+                    *ngIf="match.date && match.playerB && !match.hasByeB && !match.hasByeA && !match.playerA?.isTbd">
+                    <span class="bmi-date">{{ match.date }}</span>
+                    <span class="bmi-link">Match Centre</span>
+                  </div>
+
+                </div><!-- /bracket-match-group -->
+              </ng-container>
+
+            </div><!-- /round-slots -->
+          </div><!-- /round-col -->
+
+          <!-- ── Connector column ──── -->
+          <div class="connector-col"
+            *ngIf="ri < currentCategory.rounds.length - 1"
+            [style.height.px]="getRoundColumnHeight()">
+
+            <ng-container *ngFor="let evenSlot of getConnectorPairs(ri)">
+              <div class="conn-arm conn-arm-top"
+                [style.top.px]="getConnectorTop(ri, evenSlot)"></div>
+              <div class="conn-spine"
+                [style.top.px]="getConnectorTop(ri, evenSlot)"
+                [style.height.px]="getConnectorHeight(ri)"></div>
+              <div class="conn-arm conn-arm-bot"
+                [style.top.px]="getConnectorTop(ri, evenSlot) + getConnectorHeight(ri)"></div>
+              <div class="conn-center-arm"
+                [style.top.px]="getConnectorTop(ri, evenSlot) + getConnectorHeight(ri) / 2"></div>
+            </ng-container>
+
+          </div><!-- /connector-col -->
+
+        </ng-container>
+
+      </div><!-- /bracket-body -->
+    </div><!-- /bracket-container -->
+  </div><!-- /bracket-scroll-wrap -->
+
+  <!-- MATCH POPUP -->
+  <div class="match-popup"
+    *ngIf="hoveredMatch && hasResult(hoveredMatch)"
+    [style.top.px]="popupY"
+    [style.left.px]="popupX">
+    <div class="mp-header">
+      <div>
+        <div class="mp-title">{{ hoveredMatch.roundLabel }}</div>
+        <div class="mp-venue" *ngIf="hoveredMatch.venue">{{ hoveredMatch.venue }}</div>
+      </div>
+      <div class="mp-total-score">
+        <span [class.mp-win]="hoveredMatch.playerA?.isWinner">{{ hoveredMatch.playerA?.score }}</span>
+        <span class="mp-dash">-</span>
+        <span [class.mp-win]="hoveredMatch.playerB?.isWinner">{{ hoveredMatch.playerB?.score }}</span>
+      </div>
+    </div>
+    <div class="mp-players">
+      <div class="mp-player-row" [class.mp-winner]="hoveredMatch.playerA?.isWinner">
+        <div class="mp-player-left">
+          <img *ngIf="hoveredMatch.playerA?.flag"
+            [src]="'https://flagcdn.com/16x12/' + hoveredMatch.playerA.flag + '.png'"
+            class="mp-flag" />
+          <i class="fa fa-user mp-icon"></i>
+          <span class="mp-name">{{ hoveredMatch.playerA?.name }}</span>
+          <span class="mp-seed" *ngIf="hoveredMatch.playerA?.seed">({{ hoveredMatch.playerA.seed }})</span>
+        </div>
+        <div class="mp-games">
+          <span *ngFor="let g of hoveredMatch.playerA?.games" class="mp-game">{{ g }}</span>
+        </div>
+      </div>
+      <div class="mp-player-row" [class.mp-winner]="hoveredMatch.playerB?.isWinner">
+        <div class="mp-player-left">
+          <img *ngIf="hoveredMatch.playerB?.flag"
+            [src]="'https://flagcdn.com/16x12/' + hoveredMatch.playerB.flag + '.png'"
+            class="mp-flag" />
+          <i class="fa fa-user mp-icon"></i>
+          <span class="mp-name">{{ hoveredMatch.playerB?.name }}</span>
+          <span class="mp-seed" *ngIf="hoveredMatch.playerB?.seed">({{ hoveredMatch.playerB.seed }})</span>
+        </div>
+        <div class="mp-games">
+          <span *ngFor="let g of hoveredMatch.playerB?.games" class="mp-game">{{ g }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="mp-footer" *ngIf="hoveredMatch.date">
+      <span class="mp-date">{{ hoveredMatch.date }}</span>
+    </div>
+  </div>
+
+</div>

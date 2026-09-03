@@ -1,0 +1,85 @@
+/* Loading overlay — full screen white */
+.wtt-loading-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #fff;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOverlay .15s ease;
+}
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.wtt-loading-content {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Logo */
+.wtt-loading-logo-img {
+  width: 120px;
+  opacity: 0.25;
+  display: block;
+  margin: 0 auto 20px;
+  filter: grayscale(1);
+}
+
+/* "World Table Tennis" */
+.wtt-loading-title {
+  font-family: "Bio Sans", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #bbb;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* "You're on your way!" */
+.wtt-loading-subtitle {
+  font-family: "Bio Sans", sans-serif;
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+/* Fun fact — orange link style */
+.wtt-loading-fact {
+  font-family: "Bio Sans", sans-serif;
+  font-size: 13px;
+  color: rgb(240, 107, 37);
+  margin-bottom: 20px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* Progress bar wrapper */
+.wtt-loading-bar-wrap {
+  width: 300px;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* Animated progress bar — orange to red gradient */
+.wtt-loading-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(to right, rgb(240, 107, 37), rgb(220, 50, 30));
+  animation: loadingProgress 1.2s ease-in-out infinite;
+  transform-origin: left;
+}
+
+@keyframes loadingProgress {
+  0%   { width: 0%; opacity: 1; }
+  70%  { width: 90%; opacity: 1; }
+  90%  { width: 100%; opacity: 0.8; }
+  100% { width: 100%; opacity: 0; }
+}

@@ -1,0 +1,279 @@
+:host { display: block; background: #fff; font-family: "Bio Sans", sans-serif; }
+
+/* HERO — 450px to accommodate 320px photo + back btn + custom_space */
+.mc-hero {
+  background: #111; color: #fff; position: relative;
+  padding: 20px 0 0;
+  height: 450px;
+  overflow: hidden;
+}
+/* mc-back-btn — flex container, align-items center */
+.mc-back-btn {
+  background: transparent; border: none; color: #fff; cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  transition: opacity .2s;
+  position: relative; z-index: 2;
+  padding: 0 26px;
+  height: 100%;
+  &:hover { opacity: 0.75; }
+}
+/* span.common_page_header: wrapper, display flex, align-items center */
+.common_page_header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 26px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  line-height: 1;
+  padding: 0px;
+  margin: 0px;
+}
+/* path/chevron — display inline-block, font-size 26px bold */
+.back-chevron {
+  display: inline-block;
+  font-size: 26px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  line-height: 1;
+  padding: 0px;
+  margin: 0px;
+  vertical-align: middle;
+}
+/* span.fw300 — display inline-block, 26px light */
+.fw300 {
+  display: inline-block;
+  font-size: 26px;
+  font-weight: 300;
+  color: rgb(255, 255, 255);
+  font-family: "Bio Sans", sans-serif;
+  line-height: 1;
+  padding: 0px;
+  margin: 0px;
+  vertical-align: middle;
+}
+
+
+/* div.mc-custom-space: 28px high, margin 26px — flex row contains Back button */
+.mc-custom-space {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 28px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  padding: 0px;
+  margin: 26px 0;
+  box-sizing: border-box;
+}
+
+/* mc-back-btn inside custom_space */
+.mc-back-btn {
+  background: transparent; border: none; color: #fff; cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity .2s;
+  position: relative; z-index: 2;
+  padding: 0 26px;
+  height: 100%;
+  &:hover { opacity: 0.75; }
+}
+.mc-hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(450px - 44px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* div.col-md-12.col-sm-12: 529x320px, padding 0 15px */
+.mc-hero-player {
+  width: 529px; flex-shrink: 0;
+  height: 100%;
+  padding: 0 15px;
+  display: flex; align-items: flex-end;
+  overflow: hidden; position: relative;
+}
+/* img.player_img_v2: 202x320px, border-radius 2% — full body */
+.mc-player-photo {
+  width: 202px;
+  height: 320px;
+  object-fit: cover;
+  object-position: top center;
+  display: inline;
+  border-radius: 2%;
+}
+.left-photo {
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to right, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+  margin-left: auto;
+}
+.right-photo {
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to left, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+}
+
+/* div.col-md-2.col-sm-4 — center column, auto height, centered */
+.mc-hero-content {
+  flex: 1;
+  padding: 0 15px;
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+}
+
+/* Event logo placeholder — bigger */
+.mc-event-logo {
+  width: 320px; height: auto; object-fit: contain; margin-bottom: 4px;
+}
+.mc-event-logo-placeholder {
+  width: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; margin-bottom: 6px;
+}
+.mc-logo-icon { font-size: 52px; color: #f06b25; margin-bottom: 4px; }
+.mc-logo-series {
+  font-size: 13px; font-weight: 700; color: #f06b25;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+
+/* Event name — bold white, large */
+.mc-event-name {
+  font-size: 28px; font-weight: 800; color: #fff;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;
+  line-height: 1.2;
+}
+.mc-round { font-size: 14px; color: #aaa; margin-bottom: 10px; }
+
+/* Score — span.bold.big_score_text: 94x56px, 45.5px/700, line-height 20px */
+.mc-score-block {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 4px;
+}
+.mc-score {
+  display: inline;
+  font-size: 45.5px; font-weight: 700;
+  color: rgb(255, 255, 255);
+  width: 94px; height: 56px; line-height: 20px;
+  text-align: center;
+  &.winner { color: rgb(240, 107, 37); }
+}
+.mc-score-sep { font-size: 36px; color: #555; font-weight: 300; line-height: 56px; }
+
+/* Players row — di bawah score, margin-top auto supaya ke bawah */
+.mc-players-row {
+  display: flex; align-items: center; justify-content: center; gap: 40px;
+  margin-top: 12px;
+}
+.mc-player {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+.mc-vs { color: #555; font-size: 12px; font-weight: 700; letter-spacing: 2px; }
+.mc-flag { height: 15px; width: 20px; object-fit: cover; border-radius: 1px; }
+.mc-player-rank { font-size: 11px; color: #888; font-weight: 400; }
+
+/* BODY */
+.mc-body { padding: 0 0 60px; }
+
+/* Score table — div.col-md-10.col-sm-12: height 107px, margin 20px 155px, border-radius 5px, padding 0 15px */
+.mc-score-table-wrap {
+  height: 107px;
+  margin: 20px auto;
+  max-width: calc(100% - 312px);
+  padding: 0 15px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  overflow: hidden;
+}
+.mc-score-table { width: 100%; border-collapse: collapse; height: 100%; }
+thead tr { background: #f8f8f8; border-bottom: 2px solid #eee; }
+thead th {
+  padding: 8px 14px; text-align: center;
+  font-size: 11px; font-weight: 700; color: #888;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  &.col-player { text-align: left; }
+}
+tbody tr { border-bottom: 1px solid #f5f5f5; }
+tbody tr:last-child { border-bottom: none; }
+tbody td { padding: 10px 14px; font-size: 13px; color: #333; text-align: center; }
+tbody td.col-player { text-align: left; }
+
+.table-player-info { display: flex; align-items: center; gap: 8px; }
+.mc-flag-sm { height: 12px; width: 18px; object-fit: cover; border-radius: 1px; }
+.winner-check { color: #f06b25; font-size: 12px; }
+.table-player-name { font-size: 13px; font-weight: 600; color: #111; }
+.col-match { font-size: 22px; font-weight: 900; color: #ccc; &.match-winner { color: rgb(240, 107, 37); } }
+.col-set { font-size: 14px; color: #555; &.set-winner { color: rgb(240, 107, 37); font-weight: 700; } }
+
+.mc-venue-info {
+  padding: 8px 14px; font-size: 12px; color: #888; text-align: center;
+  background: #fafafa; border-top: 1px solid #eee; margin-top: 4px;
+}
+
+/* COMMENTARY — div.matchCommentary-livecontent:
+   bg: rgb(249,249,251), padding: 10px 0 0 0, margin: 0 225px, border-radius: 4px */
+.mc-commentary-section {
+  background-color: rgb(249, 249, 251);
+  padding: 10px 0 0 0;
+  margin: 0 auto 20px;
+  max-width: calc(100% - 312px);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.mc-commentary-title {
+  font-size: 16px; font-weight: 800; color: #111;
+  margin: 0 0 0; padding: 8px 16px 12px; text-align: center; letter-spacing: 0.5px;
+}
+/* Commentary list — no outer border (bg handles it) */
+.mc-commentary-list { overflow: hidden; }
+.commentary-item {
+  display: flex; gap: 14px; padding: 12px 16px;
+  border-bottom: 1px solid #eee; position: relative;
+  &:last-child { border-bottom: none; }
+  /* Left timeline line — only up to this item, not beyond */
+  &::before {
+    content: ''; position: absolute;
+    left: 28px; top: 0; bottom: -1px; width: 2px;
+    background: #eee; z-index: 0;
+  }
+  &:first-child::before { top: 50%; }
+  &:last-child::before { bottom: 50%; }
+  &.type-completed::before { background: rgb(240,107,37); }
+  &.type-game::before { background: #2196f3; }
+}
+.commentary-icon {
+  width: 28px; height: 28px; border-radius: 50%; background: #f06b25;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  position: relative; z-index: 1;
+  i { color: #fff; font-size: 11px; }
+  .type-point & { background: #e0e0e0; i { color: #555; } }
+  .type-game & { background: #2196f3; }
+  .type-serve & { background: #eee; i { color: #888; } }
+}
+.commentary-body { flex: 1; }
+.commentary-header {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;
+}
+.commentary-type-label {
+  font-size: 12px; font-weight: 700; color: #f06b25;
+  .type-game & { color: #2196f3; }
+  .type-point & { color: #333; }
+  .type-serve & { color: #888; }
+}
+.commentary-time { font-size: 11px; color: #aaa; }
+.commentary-detail { font-size: 12px; color: #555; line-height: 1.5; }
+
+/* Not found */
+.mc-not-found { text-align: center; padding: 80px 20px; color: #999; }
+.mc-not-found i { font-size: 2.5rem; color: #ddd; display: block; margin-bottom: 12px; }
+.mc-not-found p { font-size: 14px; margin-bottom: 16px; }
+.mc-back-btn-plain {
+  background: #f06b25; color: #fff; border: none;
+  padding: 10px 24px; border-radius: 4px; cursor: pointer;
+  font-size: 13px; font-weight: 700;
+}

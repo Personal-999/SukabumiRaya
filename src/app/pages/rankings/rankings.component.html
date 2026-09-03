@@ -1,0 +1,90 @@
+<div class="container-fluid p-0" style="min-height:100vh; background:#fff; color:#fff;">
+
+  <!-- Page header -->
+  <div class="latest_header common_page_pad">
+    <h1 class="common_page_header">Peringkat</h1>
+    <p style="color:#666; font-size:12px; margin:4px 0 0;">Updated: {{ today }}</p>
+  </div>
+
+  <div class="container-fluid common_page_pad mt-3">
+
+    <!-- Category + Gender tabs -->
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+
+      <!-- Individual / Pairs -->
+      <div style="display:flex; border:1px solid #ddd; border-radius:4px; overflow:hidden;">
+        <button (click)="setCategory('individual')"
+          style="padding:7px 20px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border:none; cursor:pointer; transition:all .15s;"
+          [style.background]="activeCategory==='individual' ? 'var(--c-theme-color)' : '#111'"
+          [style.color]="activeCategory==='individual' ? '#fff' : '#888'">Individual</button>
+        <button (click)="setCategory('pairs')"
+          style="padding:7px 20px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border:none; cursor:pointer; transition:all .15s;"
+          [style.background]="activeCategory==='pairs' ? 'var(--c-theme-color)' : '#111'"
+          [style.color]="activeCategory==='pairs' ? '#fff' : '#888'">Pairs</button>
+      </div>
+
+      <!-- Men / Women (only for individual) -->
+      <div style="display:flex; border:1px solid #ddd; border-radius:4px; overflow:hidden;" *ngIf="activeCategory==='individual'">
+        <button (click)="setGender('men')"
+          style="padding:7px 20px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border:none; cursor:pointer; transition:all .15s;"
+          [style.background]="activeGender==='men' ? '#1a3a5c' : '#111'"
+          [style.color]="activeGender==='men' ? '#fff' : '#888'">Men</button>
+        <button (click)="setGender('women')"
+          style="padding:7px 20px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border:none; cursor:pointer; transition:all .15s;"
+          [style.background]="activeGender==='women' ? '#6a1a3a' : '#111'"
+          [style.color]="activeGender==='women' ? '#fff' : '#888'">Women</button>
+      </div>
+    </div>
+
+    <!-- Rankings table -->
+    <div class="top_rank_card_holder" style="background:#f8f8f8; border:1px solid #eee; border-radius:6px; overflow:hidden;">
+
+      <!-- Table header -->
+      <div style="display:flex; align-items:center; padding:8px 16px; background:#fff; border-bottom:2px solid var(--c-theme-color);">
+        <span style="width:50px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:#555;">#</span>
+        <span style="width:24px;"></span><!-- flag -->
+        <span style="flex:1; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:#555; padding-left:8px;">Player</span>
+        <span style="width:100px; text-align:right; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:#555;">Points</span>
+      </div>
+
+      <!-- Ranking rows -->
+      <div class="row toprank_person_row align-items-center"
+        *ngFor="let r of rankings"
+        style="margin:0; padding:10px 16px; border-bottom:1px solid #f0f0f0; transition:background .15s; cursor:pointer;"
+        onmouseover="this.style.background='#141414'" onmouseout="this.style.background='transparent'">
+
+        <!-- Rank + diff indicator -->
+        <div style="width:50px; display:flex; flex-direction:column; align-items:flex-start;">
+          <span class="rank_holder" style="font-size:1rem; font-weight:900;"
+            [style.color]="r.rank <= 3 ? 'var(--c-theme-color)' : '#fff'">{{ r.rank }}</span>
+          <span *ngIf="r.rankDiff > 0"  style="font-size:9px; color:var(--c-theme-green-color,#2a9); line-height:1;">▲ {{ r.rankDiff }}</span>
+          <span *ngIf="r.rankDiff < 0"  style="font-size:9px; color:var(--c-theme-red-color,#c00); line-height:1;">▼ {{ r.rankDiff * -1 }}</span>
+          <span *ngIf="r.rankDiff === 0" style="font-size:9px; color:#444; line-height:1;">—</span>
+        </div>
+
+        <!-- Flag -->
+        <div style="width:30px; padding:0 6px 0 0;">
+          <img [src]="getFlagUrl(r.nationalityCode)" [alt]="r.nationalityCode"
+            style="height:14px; width:18px; object-fit:cover; border-radius:1px; border:1px solid #333;" />
+        </div>
+
+        <!-- Player name -->
+        <div class="col name_holder" style="padding:0 8px; font-size:13px; font-weight:500; color:#333; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+          {{ r.playerName }}
+        </div>
+
+        <!-- Points -->
+        <div class="points_holder" style="width:100px; text-align:right; font-size:12px; font-weight:600; color:var(--c-theme-color);">
+          {{ r.points | number }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Last updated -->
+    <p class="ranking_last_updated_text text-right" style="font-size:11px; color:#444; padding:12px 4px;">
+      Rankings valid as of {{ today }}
+    </p>
+
+    <div style="height:60px;"></div>
+  </div>
+</div>

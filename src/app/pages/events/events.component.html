@@ -1,0 +1,167 @@
+﻿<div class="events-page">
+
+  <!-- TOP HEADER BAR -->
+  <div class="events-topbar">
+    <h1 class="events-title">EVENTS</h1>
+    <div class="view-toggle">
+      <button class="view-btn" [class.active]="viewMode === 'list'" (click)="viewMode = 'list'">List</button>
+      <button class="view-btn calendar-btn" [class.active]="viewMode === 'calendar'" (click)="viewMode = 'calendar'">Calendar</button>
+    </div>
+    <div class="events-search-wrap">
+      <input class="events-search-input" type="search" placeholder="Search by Event Name..."
+        [(ngModel)]="searchQuery" />
+      <button class="events-search-btn"><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+
+  <!-- ===== LIST VIEW ===== -->
+  <div *ngIf="viewMode === 'list'">
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <span class="filter-label">Filter By Category</span>
+      <div class="filter-select-wrap">
+        <select class="filter-select" [(ngModel)]="filterCategory">
+          <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Event cards -->
+    <div class="event-list">
+      <div class="event-card" *ngFor="let evt of filteredEvents">
+
+        <!-- BG image -->
+        <div class="event-bg" [style.backgroundImage]="'url(' + evt.imageUrl + ')'">
+          <div class="event-bg-overlay"></div>
+
+          <!-- Top section -->
+          <div class="event-card-top">
+            <!-- Left: tier badge + date + name + venue + categories + btn -->
+            <div class="event-card-left">
+              <div class="event-tier-badge" [style.color]="evt.tierColor">
+                <i class="fa fa-circle" style="font-size:8px; margin-right:6px;"></i>
+                {{ evt.tierLabel }}
+              </div>
+              <div class="event-date-row">
+                <i class="fa fa-calendar" style="margin-right:6px; color:#ccc;"></i>
+                <span class="event-date-text">{{ evt.dateLabel }}</span>
+              </div>
+              <h2 class="event-name">{{ evt.name }}</h2>
+              <div class="event-venue">{{ evt.venue }}</div>
+              <div class="event-location">{{ evt.location }}</div>
+
+              <div class="event-categories">
+                <span class="cat-pill" *ngFor="let c of evt.categories">{{ c }}</span>
+              </div>
+
+              <div class="event-actions">
+                <button class="btn-event-info">EVENT INFO</button>
+              </div>
+              <div class="event-prize" *ngIf="evt.prizeMoney">
+                PRIZE MONEY : <strong>{{ evt.prizeMoney }}</strong>
+              </div>
+            </div>
+
+            <!-- Right: countdown OR completed -->
+            <div class="event-card-right">
+              <div class="countdown-box" *ngIf="getCountdown(evt) as cd">
+                <div class="cd-item">
+                  <span class="cd-num">{{ cd.days }}</span>
+                  <span class="cd-label">Days</span>
+                </div>
+                <div class="cd-item">
+                  <span class="cd-num">{{ pad(cd.hours) }}</span>
+                  <span class="cd-label">Hours</span>
+                </div>
+                <div class="cd-item">
+                  <span class="cd-num">{{ pad(cd.minutes) }}</span>
+                  <span class="cd-label">Minutes</span>
+                </div>
+                <div class="cd-item">
+                  <span class="cd-num">{{ pad(cd.seconds) }}</span>
+                  <span class="cd-label">Seconds</span>
+                </div>
+              </div>
+              <div class="completed-badge" *ngIf="evt.completed">
+                <i class="fa fa-check-circle"></i> Selesai
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="no-events" *ngIf="filteredEvents.length === 0">
+        <i class="fa fa-calendar-times-o"></i>
+        <p>Tidak ada event ditemukan.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CALENDAR VIEW ===== -->
+  <div *ngIf="viewMode === 'calendar'">
+
+    <!-- Filter bar -->
+    <div class="filter-bar cal-filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Filter By Year</span>
+        <div class="filter-select-wrap">
+          <select class="filter-select" [(ngModel)]="filterYear">
+            <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Filter By Category</span>
+        <div class="filter-select-wrap">
+          <select class="filter-select" [(ngModel)]="filterCategory">
+            <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Month groups -->
+    <div class="cal-body">
+      <div class="cal-month-group" *ngFor="let g of calendarGroups">
+        <div class="cal-month-header">
+          <span class="cal-month-label">{{ g.month }}</span>
+          <span class="cal-month-count">{{ g.events.length }} event(s)</span>
+        </div>
+        <div class="cal-event-row" *ngFor="let evt of g.events">
+          <div class="cal-date">
+            <span class="cal-date-start">
+              {{ evt.dateStart | date:'d MMM' }}
+            </span>
+            <span class="cal-date-sep"> - </span>
+            <span class="cal-date-end">
+              {{ evt.dateEnd | date:'d MMM' }}
+            </span>
+          </div>
+          <div class="cal-event-info">
+            <span class="cal-event-name">{{ evt.name }}</span>
+            <span class="cal-tier-badge" [style.color]="evt.tierColor">{{ evt.tierLabel }}</span>
+          </div>
+          <div class="cal-champions" *ngIf="evt.completed">
+            <span class="cal-champ-label">Champions</span>
+            <div class="cal-champ-names">
+              <span *ngIf="evt.championsMs">MS: {{ evt.championsMs }}</span>
+              <span *ngIf="evt.championsWs">WS: {{ evt.championsWs }}</span>
+            </div>
+          </div>
+          <div class="cal-upcoming" *ngIf="!evt.completed">
+            <button class="btn-tickets">Daftar</button>
+          </div>
+          <div class="cal-location">{{ evt.location }}</div>
+        </div>
+      </div>
+
+      <div class="no-events" *ngIf="calendarGroups.length === 0">
+        <i class="fa fa-calendar-times-o"></i>
+        <p>Tidak ada event ditemukan.</p>
+      </div>
+    </div>
+  </div>
+
+</div>

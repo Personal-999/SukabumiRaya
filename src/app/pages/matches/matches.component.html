@@ -1,0 +1,296 @@
+<div class="matches-page" (click)="showEventDropdown = false; showSubEventDropdown = false;">
+
+  <!-- HEADER -->
+  <div class="matches-header">
+    <h1 class="matches-title">MATCHES</h1>
+  </div>
+
+  <!-- TABS -->
+  <div class="matches-tabs-bar">
+    <button class="tab-btn" [class.active]="selectedTab === 'COMPLETED'" (click)="selectTab('COMPLETED')">COMPLETED</button>
+    <button class="tab-btn" [class.active]="selectedTab === 'POOL'" (click)="selectTab('POOL')">POOL</button>
+    <button class="tab-btn" [class.active]="selectedTab === 'SCHEDULED'" (click)="selectTab('SCHEDULED')">SCHEDULED</button>
+    <button class="tab-btn" [class.active]="selectedTab === 'DRAWS'" (click)="selectTab('DRAWS')">DRAWS</button>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="matches-filter-bar">
+
+    <!-- Filter By Event - custom dropdown -->
+    <div class="filter-group">
+      <label class="filter-label">Filter By Event</label>
+      <div class="custom-dropdown" (click)="$event.stopPropagation(); showEventDropdown = !showEventDropdown; showSubEventDropdown = false;">
+        <div class="custom-dropdown-trigger">
+          <span class="dropdown-value">{{ filterEvent }}</span>
+          <i class="fa fa-chevron-down dropdown-arrow" [class.open]="showEventDropdown"></i>
+        </div>
+        <div class="custom-dropdown-panel event-panel" *ngIf="showEventDropdown" (click)="$event.stopPropagation()">
+          <div class="dropdown-item" *ngFor="let e of events"
+            [class.selected]="filterEvent === e"
+            (click)="selectEvent(e)">{{ e }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter By SubEvent - only show when actual sub-events exist -->
+    <div class="filter-group" *ngIf="subEvents.length > 1">
+      <label class="filter-label">Filter By SubEvent</label>
+      <div class="custom-dropdown" (click)="$event.stopPropagation(); showSubEventDropdown = !showSubEventDropdown; showEventDropdown = false;">
+        <div class="custom-dropdown-trigger">
+          <span class="dropdown-value">{{ filterSubEvent }}</span>
+          <i class="fa fa-chevron-down dropdown-arrow" [class.open]="showSubEventDropdown"></i>
+        </div>
+        <div class="custom-dropdown-panel subevent-panel" *ngIf="showSubEventDropdown" (click)="$event.stopPropagation()">
+          <div class="dropdown-item" *ngFor="let s of subEvents"
+            [class.selected]="filterSubEvent === s"
+            (click)="selectSubEvent(s)">{{ s }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="filter-group search-group">
+      <label class="filter-label">Search</label>
+      <div class="search-wrap">
+        <input class="search-input" type="search" placeholder="Search by Player, Round, Table..."
+          [(ngModel)]="searchQuery" (ngModelChange)="recomputeFiltered()" />
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== COMPLETED & SCHEDULED ===== -->
+  <div class="matches-body" *ngIf="selectedTab === 'COMPLETED' || selectedTab === 'SCHEDULED'">
+
+    <div class="matches-grid" *ngIf="filteredMatches.length > 0">
+      <div class="match-card" *ngFor="let m of filteredMatches">
+
+        <div class="match-card-header">
+          <div class="match-info-left">
+            <div class="match-round">{{ m.round }}</div>
+            <div class="match-venue">{{ m.venue }} | {{ m.table }}</div>
+          </div>
+          <div class="match-score" *ngIf="m.status === 'completed'">
+            <span [class.winner-score]="getWinner(m) === 'A'">{{ m.scoreA }}</span>
+            <span class="score-sep">-</span>
+            <span [class.winner-score]="getWinner(m) === 'B'">{{ m.scoreB }}</span>
+          </div>
+          <div class="match-time" *ngIf="m.status === 'scheduled'">
+            <i class="fa fa-clock-o"></i> {{ m.scheduledTime }}
+          </div>
+        </div>
+
+        <div class="match-players">
+          <div class="player-row" [class.winner-row]="getWinner(m) === 'A'">
+            <div class="player-left">
+              <i class="fa fa-check-circle winner-icon" *ngIf="getWinner(m) === 'A'"></i>
+              <img *ngIf="m.playerA[0].flag" [src]="'https://flagcdn.com/20x15/' + m.playerA[0].flag + '.png'"
+                class="player-flag" [alt]="m.playerA[0].flag" />
+              <span class="player-name">{{ m.playerA[0].name }}</span>
+              <span class="player-rank" *ngIf="m.playerA[0].rank">({{ m.playerA[0].rank }})</span>
+            </div>
+            <div class="player-sets" *ngIf="m.status === 'completed'">
+              <span *ngFor="let s of m.playerA[0].sets" class="set-score">{{ s }}</span>
+            </div>
+          </div>
+
+          <div class="player-row" [class.winner-row]="getWinner(m) === 'B'">
+            <div class="player-left">
+              <i class="fa fa-check-circle winner-icon" *ngIf="getWinner(m) === 'B'"></i>
+              <img *ngIf="m.playerB[0].flag" [src]="'https://flagcdn.com/20x15/' + m.playerB[0].flag + '.png'"
+                class="player-flag" [alt]="m.playerB[0].flag" />
+              <span class="player-name">{{ m.playerB[0].name }}</span>
+              <span class="player-rank" *ngIf="m.playerB[0].rank">({{ m.playerB[0].rank }})</span>
+            </div>
+            <div class="player-sets" *ngIf="m.status === 'completed'">
+              <span *ngFor="let s of m.playerB[0].sets" class="set-score">{{ s }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="match-card-footer">
+          <button class="btn-match-centre" (click)="onMatchCentreClick(m)">MATCH CENTRE</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="no-results" *ngIf="filteredMatches.length === 0">
+      <i class="fa fa-search"></i>
+      <p>Tidak ada pertandingan ditemukan.</p>
+    </div>
+  </div>
+
+
+  <!-- ===== POOL ===== -->
+  <div class="pool-body" *ngIf="selectedTab === 'POOL'">
+
+
+
+    <!-- Pool tables -->
+    <div class="pool-section" *ngFor="let pool of filteredPools">
+      <div class="pool-card">
+        <div class="pool-tables-row">
+          <!-- Tabel Hasil Pool -->
+          <div class="pool-table-wrap">
+            <table class="pool-table">
+              <thead>
+                <tr>
+                  <th>NO</th>
+                  <th class="pool-team-col">{{ pool.name }}</th>
+                  <th *ngFor="let t of pool.teams">{{ t.no }}</th>
+                  <th>MENANG</th>
+                  <th>KALAH</th>
+                  <th>NILAI</th>
+                  <th>URUT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let t of pool.teams; let ri = index">
+                  <td class="pool-no">{{ t.no }}</td>
+                  <td class="pool-name">
+                    <span class="pool-player-name">{{ t.player || '-' }}</span>
+                    <small class="pool-ptm" *ngIf="t.ptm">{{ t.ptm }}</small>
+                  </td>
+                  <td *ngFor="let r of t.results; let ci = index" [class.pool-self]="ri === ci">
+                    <span *ngIf="ri !== ci && r === 1" class="pool-result pool-win">M</span>
+                    <span *ngIf="ri !== ci && r === 0" class="pool-result pool-lose">K</span>
+                    <span *ngIf="ri !== ci && r === null" class="pool-result">-</span>
+                  </td>
+                  <td class="pool-stat">{{ t.menang || 0 }}</td>
+                  <td class="pool-stat">{{ t.kalah || 0 }}</td>
+                  <td class="pool-stat pool-nilai">{{ t.nilai || 0 }}</td>
+                  <td class="pool-stat pool-urt">0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Jadwal Pool -->
+          <div class="pool-sched-wrap">
+            <table class="pool-sched">
+              <thead>
+                <tr>
+                  <th>Hari/Tgl</th>
+                  <th>JAM</th>
+                  <th>MEJA</th>
+                  <th>ACARA</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of pool.schedule">
+                  <td class="sched-hari">{{ s.hari }}</td>
+                  <td class="sched-jam">{{ s.jam }}</td>
+                  <td class="sched-m">{{ s.m }}</td>
+                <td class="sched-vs">{{ s.acara || s.vs }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ===== DRAWS ===== -->
+  <div class="draws-body" *ngIf="selectedTab === 'DRAWS'">
+    <app-draws></app-draws>
+  </div>
+
+</div>
+
+<!-- ===== SCHEDULED MATCH CENTRE MODAL ===== -->
+<div class="smc-overlay" *ngIf="showScheduledModal" (click)="closeScheduledModal()">
+  <div class="smc-dialog" (click)="$event.stopPropagation()">
+
+    <!-- Title: h2.match_center_title: 13px/Roboto/400, color #ff6b00, lh 32px -->
+    <div class="smc-header">
+      <h2 class="smc-title">MATCH CENTRE</h2>
+      <button class="smc-close-btn" (click)="closeScheduledModal()">Close</button>
+    </div>
+
+    <div *ngIf="modalMatch">
+      <!-- Event name + round -->
+      <div class="smc-event-name">{{ modalMatch.event }}</div>
+      <div class="smc-round">{{ modalMatch.round }}</div>
+
+      <!-- 3-col: player A | center | player B -->
+      <div class="smc-players-section">
+
+        <!-- Player A -->
+        <div class="smc-player-col">
+          <img class="smc-player-img"
+            [src]="modalMatch.playerA[0].photo || 'https://wttwebcmsprod.blob.core.windows.net/websitefiles/images/general/men_default_left.png'"
+            [alt]="modalMatch.playerA[0].name" />
+          <div class="smc-player-name">{{ modalMatch.playerA[0].name }}</div>
+          <div class="smc-player-flag">
+            <img *ngIf="modalMatch.playerA[0].flag"
+              [src]="'https://flagcdn.com/20x15/' + modalMatch.playerA[0].flag + '.png'" />
+          </div>
+        </div>
+
+        <!-- Center section -->
+        <div class="smc-center-col">
+          <!-- Fan vote semicircle (CSS only) -->
+          <div class="smc-fan-vote">
+            <div class="smc-chart">
+              <div class="smc-chart-half smc-chart-left"></div>
+              <div class="smc-chart-half smc-chart-right"></div>
+              <div class="smc-chart-label-left">50%</div>
+              <div class="smc-chart-label-right">50%</div>
+            </div>
+            <div class="smc-fan-vote-label">Fan Vote</div>
+          </div>
+
+          <div class="smc-vs">VS</div>
+
+          <!-- UPCOMING pill: span.result_start_pill: 82x21px, bg rgb(133,142,56) -->
+          <div class="smc-upcoming-pill">UPCOMING</div>
+
+          <!-- Schedule time -->
+          <div class="smc-schedule-time" *ngIf="modalMatch.scheduledTime">
+            <i class="fa fa-clock-o"></i> {{ modalMatch.scheduledTime }}
+          </div>
+        </div>
+
+        <!-- Player B -->
+        <div class="smc-player-col">
+          <img class="smc-player-img smc-player-img-right"
+            [src]="modalMatch.playerB[0].photo || 'https://wtt-web-frontdoor-cthahjeqhbh6aqe3.a01.azurefd.net/websitefiles/images/general/men_default_right.webp'"
+            [alt]="modalMatch.playerB[0].name" />
+          <div class="smc-player-name">{{ modalMatch.playerB[0].name }}</div>
+          <div class="smc-player-flag">
+            <img *ngIf="modalMatch.playerB[0].flag"
+              [src]="'https://flagcdn.com/20x15/' + modalMatch.playerB[0].flag + '.png'" />
+          </div>
+        </div>
+
+      </div><!-- /smc-players-section -->
+
+      <!-- Venue -->
+      <div class="smc-venue">{{ modalMatch.table }} - {{ modalMatch.venue }}</div>
+
+      <!-- Head-2-Head table -->
+      <table class="smc-h2h-table">
+        <thead>
+          <tr>
+            <!-- th.tl: 461x38px, 14px/700, padding 6.5px -->
+            <th class="smc-th-player">{{ modalMatch.playerA[0].name }}</th>
+            <!-- th.tc: 230x38px, bg #111, white, 14px/700 -->
+            <th class="smc-th-center">Head-2-Head</th>
+            <th class="smc-th-player smc-th-right">{{ modalMatch.playerB[0].name }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="smc-td-val">-</td><td class="smc-td-label">Age</td><td class="smc-td-val smc-td-right">-</td></tr>
+          <tr><td class="smc-td-val">-</td><td class="smc-td-label">Playing Hand</td><td class="smc-td-val smc-td-right">-</td></tr>
+          <tr><td class="smc-td-val">-</td><td class="smc-td-label">Playing Style</td><td class="smc-td-val smc-td-right">-</td></tr>
+          <tr><td class="smc-td-val">-</td><td class="smc-td-label">Grip</td><td class="smc-td-val smc-td-right">-</td></tr>
+          <tr><td class="smc-td-val">0</td><td class="smc-td-label">Matches Won</td><td class="smc-td-val smc-td-right">0</td></tr>
+        </tbody>
+      </table>
+
+    </div><!-- /modalMatch -->
+  </div><!-- /smc-dialog -->
+</div><!-- /smc-overlay -->
+
+
+

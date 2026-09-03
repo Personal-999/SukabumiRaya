@@ -1,0 +1,27 @@
+<div class="container-fluid p-0" style="min-height:100vh; background:#fff;">
+  <div class="latest_header common_page_pad">
+    <h1 class="common_page_header">Teams</h1>
+  </div>
+  <div class="container-fluid common_page_pad mt-3">
+    <app-loading-spinner *ngIf="loading" message="Loading teams..."></app-loading-spinner>
+    <!-- MOCK DATA — fiktif untuk demo UI, bukan data nyata. -->
+    <div class="row" *ngIf="!loading">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3" *ngFor="let t of teams">
+        <!-- .home-card (CSS 35543) + .zoom_on_hover (36831) -->
+        <div class="home-card zoom_on_hover" style="cursor:pointer; max-height:none; text-align:center; padding:20px;">
+          <!-- .team_header_country_flag (CSS baris 36694) -->
+          <img class="team_header_country_flag"
+            [src]="'https://flagcdn.com/48x36/' + (t.nationalityCode | lowercase) + '.png'"
+            [alt]="t.nationality"
+            style="width:60px; margin-bottom:10px; border:1px solid #ddd;" />
+          <div class="content">
+            <h3 style="font-size:1rem;">{{ t.nationalityCode | uppercase }}</h3>
+          </div>
+          <div class="content-title">
+            <span style="font-size:1.1rem; font-weight:700;">{{ t.teamName }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

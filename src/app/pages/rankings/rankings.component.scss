@@ -1,0 +1,22 @@
+// Rankings page — light theme (sesuai web asli WTT)
+:host { display: block; background: #fff; }
+
+.top_rank_card_holder {
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  .toprank_person_row {
+    color: #222;
+    border-bottom: 1px solid #f0f0f0;
+    &:hover { background: #fafafa; }
+    .rank_holder  { color: #222; font-weight: 900; }
+    .name_holder  { color: #333; font-weight: 500; }
+    .points_holder { color: var(--c-theme-color); font-weight: 600; }
+  }
+}
+
+.match-button.active {
+  background: var(--c-theme-gradient) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}

@@ -1,0 +1,66 @@
+<!-- NOT FOUND -->
+<div class="desc-not-found" *ngIf="notFound">
+  <i class="fa fa-exclamation-circle"></i>
+  <h2>Artikel tidak ditemukan</h2>
+  <p>Artikel dengan ID ini tidak tersedia.</p>
+  <a href="/news" class="btn-back">← Kembali ke Berita</a>
+</div>
+
+<!-- ARTICLE PAGE -->
+<div class="desc-page" *ngIf="article">
+
+  <!-- ===== HERO IMAGE ===== -->
+  <div class="desc-hero">
+    <img [src]="article.imageUrl" [alt]="article.title" class="desc-hero-img" />
+    <div class="desc-hero-overlay"></div>
+    <div class="desc-hero-meta">
+      <span class="desc-category" [style.background]="article.categoryColor">{{ article.category }}</span>
+      <h1 class="desc-title">{{ article.title }}</h1>
+      <div class="desc-byline">
+        <span *ngIf="article.relatedTo" class="desc-related">
+          <span class="rel-label">Terkait</span>
+          <img [src]="getFlagUrl(article.relatedFlag)" [alt]="article.relatedFlag" class="rel-flag" />
+          <span class="rel-name">{{ article.relatedTo }}</span>
+        </span>
+        <span class="desc-date"><i class="fa fa-clock-o"></i> {{ article.publishedDate }}</span>
+        <span *ngIf="article.author" class="desc-author"><i class="fa fa-user"></i> {{ article.author }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BODY + SIDEBAR ===== -->
+  <div class="desc-body-wrap">
+
+    <!-- Article body -->
+    <div class="desc-body">
+      <div class="desc-content" [innerHTML]="article.body"></div>
+
+      <div class="desc-share">
+        <span class="share-label">Bagikan:</span>
+        <button class="share-btn" title="Facebook"><i class="fa fa-facebook"></i></button>
+        <button class="share-btn" title="Twitter"><i class="fa fa-twitter"></i></button>
+        <button class="share-btn" title="WhatsApp"><i class="fa fa-whatsapp"></i></button>
+        <button class="share-btn" title="Salin Link"><i class="fa fa-link"></i></button>
+      </div>
+    </div>
+
+    <!-- Related articles sidebar -->
+    <aside class="desc-sidebar" *ngIf="relatedArticles.length > 0">
+      <h3 class="sidebar-title">Artikel Terkait</h3>
+      <a *ngFor="let r of relatedArticles"
+         [href]="'/description?artId=' + r.id"
+         target="_blank"
+         class="related-card">
+        <div class="related-thumb-wrap">
+          <img [src]="r.imageUrl" [alt]="r.title" class="related-thumb" />
+        </div>
+        <div class="related-info">
+          <span class="related-cat" [style.background]="r.categoryColor">{{ r.category }}</span>
+          <p class="related-title">{{ r.title }}</p>
+          <span class="related-date">{{ r.publishedDate }}</span>
+        </div>
+      </a>
+    </aside>
+
+  </div>
+</div>

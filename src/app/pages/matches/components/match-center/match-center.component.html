@@ -1,0 +1,123 @@
+<div class="mc-page" *ngIf="match">
+
+  <!-- HERO (dark) -->
+  <div class="mc-hero">
+    <!-- custom_space berisi Back button — sejajar seperti gambar 4 -->
+    <div class="mc-custom-space">
+      <button class="mc-back-btn" (click)="goBack()">
+        <span class="common_page_header">
+          <span class="back-chevron">&#8249;</span>
+          <span class="fw300">Back</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="mc-hero-inner">
+
+      <!-- Player A photo (kiri) — div.col-md-12: 529x320px, padding 0 15px -->
+      <div class="mc-hero-player mc-hero-player-left">
+        <img [src]="match.playerA[0].photo || 'https://wttwebcmsprod.blob.core.windows.net/websitefiles/images/general/men_default_left.png'"
+          class="mc-player-photo left-photo"
+          [alt]="match.playerA[0].name" />
+      </div>
+
+      <!-- Center content — div.col-md-2.col-sm-4: 318x131px, padding 0 15px, margin 40px 0 -->
+      <div class="mc-hero-content">
+        <!-- Event logo placeholder -->
+        <div class="mc-event-logo-placeholder">
+          <i class="fa fa-table-tennis mc-logo-icon"></i>
+          <div class="mc-logo-series">Sukabumi Table Tennis Series</div>
+        </div>
+
+        <div class="mc-event-name">{{ match.event }}</div>
+        <div class="mc-round">{{ match.round }}</div>
+
+        <!-- Score block — 318x131px total center area -->
+        <div class="mc-score-block">
+          <span class="mc-score" [class.winner]="getWinner() === 'A'">{{ match.scoreA }}</span>
+          <span class="mc-score-sep">-</span>
+          <span class="mc-score" [class.winner]="getWinner() === 'B'">{{ match.scoreB }}</span>
+        </div>
+
+        <div class="mc-players-row">
+          <div class="mc-player mc-player-a">
+            <img *ngIf="match.playerA[0].flag"
+              [src]="'https://flagcdn.com/20x15/' + match.playerA[0].flag + '.png'"
+              class="mc-flag" [alt]="match.playerA[0].flag" />
+            <span class="mc-player-name">{{ match.playerA[0].name }}</span>
+            <span class="mc-player-rank" *ngIf="match.playerA[0].rank">({{ match.playerA[0].rank }})</span>
+          </div>
+          <div class="mc-vs">VS</div>
+          <div class="mc-player mc-player-b">
+            <img *ngIf="match.playerB[0].flag"
+              [src]="'https://flagcdn.com/20x15/' + match.playerB[0].flag + '.png'"
+              class="mc-flag" [alt]="match.playerB[0].flag" />
+            <span class="mc-player-name">{{ match.playerB[0].name }}</span>
+            <span class="mc-player-rank" *ngIf="match.playerB[0].rank">({{ match.playerB[0].rank }})</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player B photo (kanan) -->
+      <div class="mc-hero-player mc-hero-player-right">
+        <img [src]="match.playerB[0].photo || 'https://wtt-web-frontdoor-cthahjeqhbh6aqe3.a01.azurefd.net/websitefiles/images/general/men_default_right.webp'"
+          class="mc-player-photo right-photo"
+          [alt]="match.playerB[0].name" />
+      </div>
+
+    </div><!-- /mc-hero-inner -->
+  </div><!-- /mc-hero -->
+
+  <!-- SET SCORES TABLE -->
+  <div class="mc-body">
+    <div class="mc-score-table-wrap">
+      <table class="mc-score-table">
+        <thead>
+          <tr>
+            <th class="col-player">Player</th>
+            <th class="col-match">Match</th>
+            <th class="col-set" *ngFor="let s of match.playerA[0].sets; let i = index">Game {{ i+1 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-player">
+              <div class="table-player-info">
+                <i class="fa fa-check-circle winner-check" *ngIf="getWinner() === 'A'"></i>
+                <img *ngIf="match.playerA[0].flag"
+                  [src]="'https://flagcdn.com/20x15/' + match.playerA[0].flag + '.png'" class="mc-flag-sm" />
+                <span class="table-player-name">{{ match.playerA[0].name }}</span>
+              </div>
+            </td>
+            <td class="col-match" [class.match-winner]="getWinner() === 'A'">{{ match.scoreA }}</td>
+            <td class="col-set" *ngFor="let s of match.playerA[0].sets; let i = index"
+              [class.set-winner]="isWinnerSet(match.playerA[0].sets, i)">{{ s }}</td>
+          </tr>
+          <tr>
+            <td class="col-player">
+              <div class="table-player-info">
+                <i class="fa fa-check-circle winner-check" *ngIf="getWinner() === 'B'"></i>
+                <img *ngIf="match.playerB[0].flag"
+                  [src]="'https://flagcdn.com/20x15/' + match.playerB[0].flag + '.png'" class="mc-flag-sm" />
+                <span class="table-player-name">{{ match.playerB[0].name }}</span>
+              </div>
+            </td>
+            <td class="col-match" [class.match-winner]="getWinner() === 'B'">{{ match.scoreB }}</td>
+            <td class="col-set" *ngFor="let s of match.playerB[0].sets; let i = index"
+              [class.set-winner]="isWinnerSet(match.playerB[0].sets, i)">{{ s }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mc-venue-info">{{ match.table }} — {{ match.venue }}</div>
+    </div>
+
+
+  </div>
+
+</div>
+
+<div class="mc-not-found" *ngIf="!match">
+  <i class="fa fa-exclamation-circle"></i>
+  <p>Match tidak ditemukan.</p>
+  <button class="mc-back-btn-plain" (click)="goBack()">Kembali ke Matches</button>
+</div>

@@ -1,0 +1,22 @@
+<app-navbar *ngIf="showShell"></app-navbar>
+<main [class.wtt-main-content]="showShell">
+  <router-outlet></router-outlet>
+</main>
+<app-footer *ngIf="showShell"></app-footer>
+
+<!-- WTT Loading Screen -->
+<div class="wtt-loading-overlay" *ngIf="isLoading">
+  <div class="wtt-loading-content">
+    <!-- Logo grey -->
+    <div class="wtt-loading-logo">
+      <img src="assets/images/STT V1.png" alt="WTT" class="wtt-loading-logo-img" />
+    </div>
+    <div class="wtt-loading-title">Sukabumi Raya</div>
+    <div class="wtt-loading-subtitle">Selamat datang!</div>
+    <div class="wtt-loading-fact">{{ funFact }}</div>
+    <!-- Progress bar -->
+    <div class="wtt-loading-bar-wrap">
+      <div class="wtt-loading-bar"></div>
+    </div>
+  </div>
+</div>

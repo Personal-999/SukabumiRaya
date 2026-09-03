@@ -1,0 +1,107 @@
+<!-- Footer WTT — sesuai struktur wtt-reference-styles.css -->
+<footer style="background:#000; color:#fff; border-top:1px solid #1a1a1a; padding:40px 0 0;">
+
+  <!-- Top section: logo + links -->
+  <div class="container-fluid common_page_pad">
+    <div class="row">
+
+      <!-- Brand -->
+      <div class="col-lg-3 col-md-12 mb-4">
+        <img src="assets/images/STT V1.png" alt="WTT Logo" style="height:44px; margin-bottom:12px;" />
+        <p style="font-size:12px; color:#888; line-height:1.7; max-width:260px;">
+          Sukabumi Raya — organisasi tenis meja profesional terkemuka di Sukabumi.
+        </p>
+        <!-- App badges -->
+        <div style="display:flex; gap:8px; margin-top:16px; flex-wrap:wrap;">
+          <img src="assets/app-store.png" alt="App Store" style="height:32px; opacity:.8;" />
+          <img src="assets/google-play.png" alt="Google Play" style="height:32px; opacity:.8;" />
+        </div>
+      </div>
+
+      <!-- Competition column -->
+      <div class="col-lg-2 col-md-3 col-6 mb-4">
+        <h6 style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--c-theme-color); margin-bottom:14px;">
+          Kompetisi
+        </h6>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:8px;"><a routerLink="/eventslist" class="footer_link">Acara</a></li>
+          <li style="margin-bottom:8px;"><a routerLink="/matches" class="footer_link">Pertandingan</a></li>
+
+          <li style="margin-bottom:8px;"><a routerLink="/calendar" class="footer_link">Kalender</a></li>
+          <li style="margin-bottom:8px;"><a routerLink="/livevideo" class="footer_link">Skor Live</a></li>
+        </ul>
+      </div>
+
+      <!-- Athletes column -->
+      <div class="col-lg-2 col-md-3 col-6 mb-4">
+        <h6 style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--c-theme-color); margin-bottom:14px;">
+          Atlet
+        </h6>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:8px;"><a routerLink="/playerslist" class="footer_link">Pemain</a></li>
+          <li style="margin-bottom:8px;"><a routerLink="/teams" class="footer_link">Tim</a></li>
+          <li style="margin-bottom:8px;"><a routerLink="/equipment" class="footer_link">Perlengkapan</a></li>
+        </ul>
+      </div>
+
+      <!-- Media column -->
+      <div class="col-lg-2 col-md-3 col-6 mb-4">
+        <h6 style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--c-theme-color); margin-bottom:14px;">
+          Media
+        </h6>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:8px;"><a routerLink="/news" class="footer_link">Berita</a></li>
+          <li style="margin-bottom:8px;"><a routerLink="/headervideo" class="footer_link">Video</a></li>
+          <li style="margin-bottom:8px;"><a routerLink="/tickets" class="footer_link">Tiket</a></li>
+        </ul>
+      </div>
+
+      <!-- About column -->
+      <div class="col-lg-3 col-md-3 col-6 mb-4">
+        <h6 style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--c-theme-color); margin-bottom:14px;">
+          Tentang Kami
+        </h6>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:8px;"><a routerLink="/about-us" class="footer_link">Tentang Sukabumi Raya</a></li>
+          <li style="margin-bottom:8px;"><a routerLink="/contact" class="footer_link">Kontak</a></li>
+          <li style="margin-bottom:8px;"><a href="#" class="footer_link">Kebijakan Privasi</a></li>
+          <li style="margin-bottom:8px;"><a href="#" class="footer_link">Kebijakan Cookie</a></li>
+        </ul>
+        <!-- Social icons -->
+        <div style="display:flex; gap:12px; margin-top:14px;">
+          <a href="https://facebook.com/sukabumiraya" target="_blank" class="footer_social_icon">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://twitter.com/wtt_official" target="_blank" class="footer_social_icon">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://instagram.com/wtt_official" target="_blank" class="footer_social_icon">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://youtube.com/sukabumiraya" target="_blank" class="footer_social_icon">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div style="background:#050505; border-top:1px solid #111; padding:16px 0; margin-top:20px;">
+    <div class="container-fluid common_page_pad">
+      <div class="row align-items-center">
+        <div class="col-md-6 col-12 mb-2 mb-md-0">
+          <p style="font-size:11px; color:#555; margin:0;">
+            &copy; {{ currentYear }} Sukabumi Raya. Hak cipta dilindungi.
+          </p>
+        </div>
+        <div class="col-md-6 col-12 d-flex align-items-center justify-content-md-end gap-3" style="gap:16px;">
+          <img src="assets/ittf_found_white.png" alt="ITTF Foundation" style="height:22px; opacity:.5;" />
+          <img src="assets/wtt_w_full_white_logo.png" alt="WTT" style="height:20px; opacity:.5;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+</footer>
