@@ -169,21 +169,18 @@
             <table class="pool-sched">
               <thead>
                 <tr>
-                  <th class="sched-th-meja">MEJA</th>
-                  <th class="sched-th-lawan">LAWAN</th>
-                  <th class="sched-th-time">HARI / JAM</th>
+                  <th>HARI / TGL</th>
+                  <th>JAM</th>
+                  <th>MEJA</th>
+                  <th>ACARA</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let s of pool.schedule; let si=index" [class.sched-even]="si%2===0">
-                  <td class="sched-m">
-                    <span class="sched-badge">{{ s.m }}</span>
-                  </td>
+                <tr *ngFor="let s of pool.schedule">
+                  <td class="sched-hari">{{ s.hari || '-' }}</td>
+                  <td class="sched-jam">{{ s.jam || '-' }}</td>
+                  <td class="sched-m">{{ s.m }}</td>
                   <td class="sched-vs">{{ s.acara || s.vs }}</td>
-                  <td class="sched-time">
-                    <span class="sched-hari">{{ s.hari || '-' }}</span>
-                    <span class="sched-jam" *ngIf="s.jam"> {{ s.jam }}</span>
-                  </td>
                 </tr>
               </tbody>
             </table>

@@ -410,48 +410,31 @@
 .pool-urt { font-weight: 700; color: #333; }
 
 /* Schedule Table */
-.pool-sched-wrap { overflow-x: auto; flex: 2; min-width: 240px; }
+.pool-sched-wrap { overflow-x: auto; flex: 2; min-width: 300px; }
 .pool-sched {
   border-collapse: collapse;
   font-size: 12px;
+  font-family: Arial, sans-serif;
   width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
-
-  thead tr {
-    background: linear-gradient(135deg, #1a2035 0%, #2c3558 100%);
+  thead tr { background: #f5f5f5; }
+  th {
+    border: 1px solid #bbb;
+    padding: 5px 10px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 11px;
+    white-space: nowrap;
   }
-  .sched-th-meja {
-    padding: 7px 10px; color: #f06b25; font-weight: 700;
-    text-align: center; width: 50px; font-size: 11px;
+  td {
+    border: 1px solid #bbb;
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 12px;
+    white-space: nowrap;
   }
-  .sched-th-lawan {
-    padding: 7px 10px; color: #fff; font-weight: 700;
-    text-align: left; font-size: 11px;
-  }
-  .sched-th-time {
-    padding: 7px 10px; color: #8ab4f8; font-weight: 600;
-    text-align: right; white-space: nowrap; font-size: 11px;
-  }
-  tbody tr { border-bottom: 1px solid #f0f2f5; }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr.sched-even { background: #f9fafc; }
-  tbody tr:not(.sched-even) { background: #ffffff; }
-  td { padding: 6px 10px; }
-
-  .sched-m { text-align: center; width: 50px; }
-  .sched-badge {
-    display: inline-block; min-width: 24px; height: 24px;
-    line-height: 24px; border-radius: 50%;
-    background: #f06b25; color: #fff;
-    font-weight: 700; font-size: 12px; text-align: center;
-  }
-  .sched-vs { font-weight: 700; color: #1a2035; font-size: 13px; }
-  .sched-time { text-align: right; white-space: nowrap; }
-  .sched-hari { font-weight: 600; color: #1a6fc4; font-size: 11px; }
-  .sched-jam  { color: #f06b25; font-weight: 700; font-size: 11px; }
 }
+.sched-hari { font-weight: 700; font-size: 11px; }
+.sched-vs   { font-weight: 600; text-align: center !important; }
 
 /* Pool Event Selector */
 .pool-event-selector {
