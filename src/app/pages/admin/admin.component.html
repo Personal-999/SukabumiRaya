@@ -1370,10 +1370,10 @@
                       <th style="padding:6px 8px;text-align:left;color:#7e8299;font-weight:600;width:24px">#</th>
                       <th style="padding:6px 8px;text-align:left;color:#7e8299;font-weight:600">Pemain (PTM)</th>
                       <th *ngFor="let t of pool.teams" style="padding:6px 4px;text-align:center;color:#7e8299;font-weight:600;width:28px">{{ t.no }}</th>
-                      <th style="padding:6px 4px;text-align:center;color:#27ae60;font-weight:700;width:28px">M</th>
-                      <th style="padding:6px 4px;text-align:center;color:#e74c3c;font-weight:700;width:28px">K</th>
+                      <th style="padding:6px 4px;text-align:center;color:#27ae60;font-weight:700;width:28px">MENANG</th>
+                      <th style="padding:6px 4px;text-align:center;color:#e74c3c;font-weight:700;width:28px">KALAH</th>
                       <th style="padding:6px 4px;text-align:center;color:#f06b25;font-weight:700;width:36px">Nilai</th>
-                      <th style="padding:6px 4px;text-align:center;color:#7e8299;font-weight:600;width:28px">Urt</th>
+                      <th style="padding:6px 4px;text-align:center;color:#7e8299;font-weight:600;width:28px">URUT</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1468,10 +1468,10 @@
                   <th>NAMA PEMAIN</th>
                   <th>PTM</th>
                   <th *ngFor="let t of poolForm.teams" style="min-width:55px;text-align:center">VS {{ t.no }}</th>
-                  <th style="width:60px;text-align:center">M</th>
-                  <th style="width:60px;text-align:center">K</th>
+                  <th style="width:60px;text-align:center">MENANG</th>
+                  <th style="width:60px;text-align:center">KALAH</th>
                   <th style="width:60px;text-align:center">NILAI</th>
-                  <th style="width:55px;text-align:center">URT</th>
+                  <th style="width:55px;text-align:center">URUT</th>
                   <th style="width:36px"></th>
                 </tr>
               </thead>
@@ -1525,7 +1525,7 @@
                   <td><input type="number" [(ngModel)]="t.menang" class="form-input" style="width:56px;text-align:center" min="0" /></td>
                   <td><input type="number" [(ngModel)]="t.kalah"  class="form-input" style="width:56px;text-align:center" min="0" /></td>
                   <td><input type="number" [(ngModel)]="t.nilai"  class="form-input" style="width:56px;text-align:center" min="0" /></td>
-                  <td><input type="number" [(ngModel)]="t.urt"    class="form-input" style="width:50px;text-align:center" min="1" /></td>
+                  <td><input type="number" [(ngModel)]="t.urt"    class="form-input" style="width:50px;text-align:center" min="0" /></td>
                   <td>
                     <button class="btn-delete" (click)="removePoolTeam(ri)" title="Hapus" style="padding:5px 8px" *ngIf="poolForm.teams.length>1">
                       <i class="fa fa-times"></i>
@@ -1549,7 +1549,7 @@
                 <tr>
                   <th>HARI / TGL</th>
                   <th style="width:90px">JAM</th>
-                  <th style="width:60px">M</th>
+                  <th style="width:60px">MEJA</th>
                   <th>ACARA / LAWAN</th>
                   <th style="width:40px"></th>
                 </tr>

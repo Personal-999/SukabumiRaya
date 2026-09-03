@@ -438,7 +438,7 @@ export class AdminComponent implements OnInit {
   openPoolCreate() {
     const teamCount = 3;
     const teams = Array.from({length: teamCount}, (_, i) => ({
-      no: i + 1, player: '', ptm: '', menang: 0, kalah: 0, nilai: 0, urt: i + 1,
+      no: i + 1, player: '', ptm: '', menang: 0, kalah: 0, nilai: 0, urt: 0,
       playerSearch: '', showDropdown: false,
       results: Array.from({length: teamCount}, (_2, j) => i === j ? null : 0)
     }));
@@ -460,7 +460,7 @@ export class AdminComponent implements OnInit {
     this.poolForm.teams.forEach((t: any) => t.results.push(0));
     const results = this.poolForm.teams.map((_: any, i: number) => i === n - 1 ? null : 0);
     results.push(null);
-    this.poolForm.teams.push({ no: n, player: '', ptm: '', menang: 0, kalah: 0, nilai: 0, urt: n, playerSearch: '', showDropdown: false, results });
+    this.poolForm.teams.push({ no: n, player: '', ptm: '', menang: 0, kalah: 0, nilai: 0, urt: 0, playerSearch: '', showDropdown: false, results });
     this.rebuildSchedule();
   }
 
