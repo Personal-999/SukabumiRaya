@@ -340,10 +340,16 @@ tbody td {
 
   .divisi-pills {
     gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
   }
   .divisi-pill {
     font-size: 12px;
     padding: 5px 12px;
+    flex-shrink: 0;
   }
 
   /* Hide ranking column on tablet */
