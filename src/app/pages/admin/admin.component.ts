@@ -297,9 +297,15 @@ export class AdminComponent implements OnInit {
       ptm: (this.playerForm.ptm || '').trim()
     };
     if (this.playerFormMode === 'create') {
-      this.supabase.insertPlayer(dbData).then(() => { this.playerFormMode = 'list'; this.loadPlayers(); });
+      this.supabase.insertPlayer(dbData).then(({ error }: any) => {
+        if (error) { alert('Gagal simpan: ' + error.message); return; }
+        this.playerFormMode = 'list'; this.loadPlayers();
+      });
     } else if (this.playerFormMode === 'edit' && this.editingPlayer) {
-      this.supabase.updatePlayer(String(this.editingPlayer.id), dbData).then(() => { this.playerFormMode = 'list'; this.loadPlayers(); });
+      this.supabase.updatePlayer(String(this.editingPlayer.id), dbData).then(({ error }: any) => {
+        if (error) { alert('Gagal update: ' + error.message); return; }
+        this.playerFormMode = 'list'; this.loadPlayers();
+      });
     }
   }
 

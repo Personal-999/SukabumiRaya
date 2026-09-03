@@ -20,7 +20,7 @@ export class SupabaseService {
 
   // PLAYERS
   getPlayers()                     { return this.sb.from('players').select('*').order('full_name'); }
-  insertPlayer(d: any)             { return this.sb.from('players').insert([d]).single(); }
+  insertPlayer(d: any)             { return this.sb.from('players').insert(d); }
   updatePlayer(id: string, d: any) { return this.sb.from('players').update(d).eq('id', id); }
   deletePlayer(id: string)         { return this.sb.from('players').delete().eq('id', id); }
 
