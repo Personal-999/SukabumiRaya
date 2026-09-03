@@ -467,10 +467,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let p of playerList; let i = index"
-                class="player-row-admin"
-                data-aos="fade-up"
-                [attr.data-aos-delay]="i < 8 ? i * 40 : 0"
-                data-aos-duration="350">
+                class="player-row-admin">
                 <td class="art-id">{{ p.id ? '#' + p.id : '#–' }}</td>
                 <td>
                   <img [src]="getPlayerPhoto(p)" [alt]="p.fullName || p.lastName" class="art-thumb"
