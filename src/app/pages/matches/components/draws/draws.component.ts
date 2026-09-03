@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { SupabaseService } from "../../../../services/supabase.service";
 
 export interface BracketPlayer {
@@ -21,8 +21,10 @@ export interface DrawCategory {
   templateUrl: "./draws.component.html",
   styleUrls: ["./draws.component.scss"]
 })
-export class DrawsComponent implements OnInit, OnDestroy {
+export class DrawsComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() eventFilter: string = '';
   categories: DrawCategory[] = [];
+  allCategories: DrawCategory[] = [];
   selectedCategory = 0;
   hoveredMatch: BracketMatch | null = null;
   popupX = 0; popupY = 0;
@@ -48,6 +50,21 @@ export class DrawsComponent implements OnInit, OnDestroy {
     this.buildData();
     this.realtimeChannel = this.supabase.onBracketsChange(() => this.buildData());
     this.supabase.onEventsChange(() => this.buildData());
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['eventFilter']) { this.applyEventFilter(); }
+  }
+
+  applyEventFilter() {
+    if (!this.eventFilter || this.eventFilter === 'Semua Event') {
+      this.categories = [...this.allCategories];
+    } else {
+      this.categories = this.allCategories.filter(c =>
+        c.name.startsWith(this.eventFilter)
+      );
+    }
+    this.selectedCategory = 0;
   }
 
   ngOnDestroy() { if (this.realtimeChannel) { this.realtimeChannel.unsubscribe(); } }
@@ -100,6 +117,7 @@ export class DrawsComponent implements OnInit, OnDestroy {
   async buildData() {
     this.isLoading = true;
     this.categories = [];
+    this.allCategories = [];
     try {
       // Load events to know which categories (sub_events) are valid
       const { data: evData } = await this.supabase.getEvents();
@@ -162,6 +180,8 @@ export class DrawsComponent implements OnInit, OnDestroy {
       });
 
       this.padAllCategories();
+      this.allCategories = [...this.categories];
+      this.applyEventFilter();
     } catch (err) { console.error("buildData error:", err); }
     this.isLoading = false;
   }

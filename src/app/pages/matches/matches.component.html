@@ -191,7 +191,7 @@
   </div>
   <!-- ===== DRAWS ===== -->
   <div class="draws-body" *ngIf="selectedTab === 'DRAWS'">
-    <app-draws></app-draws>
+    <app-draws [eventFilter]="filterEvent"></app-draws>
   </div>
 
 </div>
