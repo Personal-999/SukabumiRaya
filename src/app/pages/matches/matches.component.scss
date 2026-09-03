@@ -481,3 +481,40 @@
   i { font-size: 40px; margin-bottom: 12px; display: block; }
   p { font-size: 14px; margin: 0; }
 }
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 768px) {
+
+  /* Filter bar */
+  .matches-filter-bar {
+    padding: 10px 12px;
+    gap: 12px;
+  }
+  .custom-dropdown { min-width: 100%; }
+  .search-group { min-width: 100%; max-width: 100%; }
+
+  /* Custom dropdown z-index — keep below mobile nav (99999) */
+  .custom-dropdown-menu { z-index: 1000 !important; }
+
+  /* Tabs */
+  .matches-tabs-bar { padding: 0 8px; overflow-x: auto; }
+  .tab-btn { padding: 12px 14px; font-size: 12px; white-space: nowrap; }
+
+  /* Pool body */
+  .pool-body { padding: 12px 10px; }
+
+  /* Pool tables: stack vertically on mobile */
+  .pool-tables-row {
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px 8px;
+  }
+  .pool-table-wrap { min-width: 0; flex: none; width: 100%; overflow-x: auto; }
+  .pool-sched-wrap { min-width: 0; flex: none; width: 100%; overflow-x: auto; }
+
+  /* Completed/Scheduled match cards */
+  .match-card { padding: 10px 12px; }
+
+  /* SPA modal */
+  .smc-dialog { width: 96vw; margin: 0 auto; }
+}

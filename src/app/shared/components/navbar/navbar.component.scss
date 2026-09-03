@@ -46,8 +46,16 @@
 }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-/* Mobile menu */
+/* Mobile menu — fixed position, ABOVE all page dropdowns */
 .wtt_mobile_menu_list {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  background: #111;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+
   ul li a {
     display: block;
     padding: 14px 20px;
