@@ -261,24 +261,25 @@ export class AdminComponent implements OnInit {
   };
 
   loadPlayers() {
-    // Filter out any corrupt players (no valid id) and auto-save clean list
-    let all = this.playerService.getAll();
-    const corrupt = all.filter((p: any) => !p.id || isNaN(Number(p.id)));
-    if (corrupt.length) {
-      // Clean up corrupt entries from service
-      this.playerService['players'] = all.filter((p: any) => p.id && !isNaN(Number(p.id)));
-      this.playerService['save']();
-      all = this.playerService.getAll();
-    }
-    this.playerList = all;
-    this.nextPlayerId = this.playerService.nextId();
-    this.stats[0].value = this.playerList.length;
+    this.supabase.getPlayers().then(({ data, error }: any) => {
+      if (error) { console.error('loadPlayers error', error); return; }
+      this.playerList = (data || []).map((p: any) => ({
+        id: p.id,
+        fullName: p.full_name || '',
+        firstName: '', lastName: '',
+        ptm: p.ptm || '',
+        gender: 'M', age: 0, divisi: 'A',
+        playingStyle: '', biography: '', imgUrl: '',
+        country: 'Indonesia', countryCode: 'id',
+        rank: 0, winRate: 0, favourites: 0
+      }));
+      this.stats[0].value = this.playerList.length;
+    });
   }
 
   openPlayerCreate() {
     this.playerFormMode = 'create';
     this.editingPlayer = null;
-    this.nextPlayerId = this.playerService.nextId();
     this.playerForm = { fullName: '', ptm: '', gender: 'M', age: 20, divisi: 'A', playingStyle: 'Right Hand', biography: '', imgUrl: '' };
   }
 
@@ -291,60 +292,34 @@ export class AdminComponent implements OnInit {
   savePlayer() {
     const name = (this.playerForm as any).fullName ? (this.playerForm as any).fullName.trim() : '';
     if (!name) { alert('Nama pemain tidak boleh kosong!'); return; }
-    const parts = name.split(' ');
-    const lastName = parts.length > 1 ? parts[0].toUpperCase() : name.toUpperCase();
-    const firstName = parts.length > 1 ? parts.slice(1).join(' ') : '';
-    const data: Omit<Player, 'id'> = {
-      firstName,
-      lastName,
-      fullName: name,
-      country: 'Indonesia',
-      countryCode: 'id',
-      ptm: (this.playerForm.ptm || '').trim(),
-      gender: this.playerForm.gender,
-      age: +this.playerForm.age,
-      divisi: this.playerForm.divisi,
-      rank: 0,
-      playingStyle: this.playerForm.playingStyle,
-      biography: (this.playerForm.biography || '').trim(),
-      imgUrl: (this.playerForm.imgUrl || '').trim(),
-      winRate: 0,
-      favourites: 0
+    const dbData: any = {
+      full_name: name,
+      ptm: (this.playerForm.ptm || '').trim()
     };
-    if (this.playerFormMode === 'create') { this.playerService.create(data); }
-    else if (this.playerFormMode === 'edit' && this.editingPlayer) { this.playerService.update(this.editingPlayer.id, data); }
-    this.playerFormMode = 'list';
-    this.loadPlayers();
+    if (this.playerFormMode === 'create') {
+      this.supabase.insertPlayer(dbData).then(() => { this.playerFormMode = 'list'; this.loadPlayers(); });
+    } else if (this.playerFormMode === 'edit' && this.editingPlayer) {
+      this.supabase.updatePlayer(String(this.editingPlayer.id), dbData).then(() => { this.playerFormMode = 'list'; this.loadPlayers(); });
+    }
   }
 
 
   confirmPlayerDelete(id: any) { this.deletePlayerConfirmId = id; }
   deletePlayer(id: any) {
-    this.playerService.delete(Number(id));
-    this.deletePlayerConfirmId = null;
-    this.loadPlayers();
+    this.supabase.deletePlayer(id).then(() => { this.deletePlayerConfirmId = null; this.loadPlayers(); });
   }
   cancelPlayerDelete() { this.deletePlayerConfirmId = null; }
 
   clearAllPlayers() {
     if (confirm('HAPUS SEMUA PEMAIN?\n\nSemua data pemain akan dihapus permanen dan tidak bisa dikembalikan!')) {
-      localStorage.removeItem('stt-players-v2');
-      this.playerService['players'] = [];
-      this.loadPlayers();
+      this.supabase.deleteAllPlayers().then(() => this.loadPlayers());
     }
   }
 
   deletePlayerDirect(p: any) {
     const name = (p.fullName || ((p.lastName || '') + ' ' + (p.firstName || '')) || 'pemain ini').trim() || 'pemain ini';
     if (!confirm('Hapus "' + name + '"?\n\nData pemain akan dihapus permanen.')) { return; }
-    if (p.id && !isNaN(Number(p.id))) {
-      this.playerService.delete(Number(p.id));
-    } else {
-      // Corrupt player with no id — remove by reference
-      this.playerService['players'] = (this.playerService['players'] as any[]).filter((x: any) => x !== p);
-      this.playerService['save']();
-    }
-    this.loadPlayers();
+    this.supabase.deletePlayer(p.id).then(() => this.loadPlayers());
   }
 
   getPlayerPhoto(p: any): string {
