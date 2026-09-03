@@ -443,7 +443,11 @@ export class AdminComponent implements OnInit {
       results: Array.from({length: teamCount}, (_2, j) => i === j ? null : 0)
     }));
     const perms: string[] = [];
-    for (let a = 1; a <= teamCount; a++) { for (let b = a + 1; b <= teamCount; b++) { perms.push(a + ' VS ' + b); } }
+    // Round-robin order: bye=1→2v3, bye=2→1v3, bye=3→1v2
+    for (let bye = 1; bye <= teamCount; bye++) {
+      const players = Array.from({length: teamCount}, (_, i) => i + 1).filter(p => p !== bye);
+      if (players.length === 2) { perms.push(players[0] + ' VS ' + players[1]); }
+    }
     // Auto-set cabang from event categories
     const ev = this.eventList.find((e: any) => e.name === this.selectedPoolAdminEvent);
     const autoCabang = (ev && ev.categories && ev.categories.length) ? ev.categories[0] : '';
@@ -514,7 +518,18 @@ export class AdminComponent implements OnInit {
 
   rebuildSchedule() {
     const n = this.poolForm.teams.length; const perms: string[] = [];
-    for (let a = 1; a <= n; a++) { for (let b = a + 1; b <= n; b++) { perms.push(a + ' VS ' + b); } }
+    // Round-robin: bye=1→2v3, bye=2→1v3, bye=3→1v2
+    for (let bye = 1; bye <= n; bye++) {
+      const players = Array.from({length: n}, (_, i) => i + 1).filter(p => p !== bye);
+      if (players.length === 2) { perms.push(players[0] + ' VS ' + players[1]); }
+      else if (players.length > 2) {
+        for (let a = 0; a < players.length - 1; a++) {
+          for (let b = a + 1; b < players.length; b++) {
+            perms.push(players[a] + ' VS ' + players[b]);
+          }
+        }
+      }
+    }
     this.poolForm.schedule = perms.map((vs, i) => ({ hari: '', jam: '', m: i + 1, acara: vs }));
   }
 
